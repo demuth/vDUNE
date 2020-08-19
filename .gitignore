@@ -1,0 +1,6 @@
+.DS_Store
+.idea
+prototype/DuneVR/Binaries
+prototype/DuneVR/Intermediate
+prototype/DuneVR/Saved
+*.xcworkspace
