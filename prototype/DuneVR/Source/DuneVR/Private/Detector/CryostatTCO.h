@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Engine/StaticMeshActor.h"
 #include "CryostatTCO.generated.h"
 
 
@@ -24,6 +25,8 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
 	TArray<UStaticMesh*> mesh_list_;
+
+	TArray<AStaticMeshActor*> mesh_actors_;
 
 public:	
 	// Called every frame

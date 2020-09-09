@@ -1,6 +1,6 @@
 #include "CryostatTCO.h"
-#include "Engine/StaticMeshActor.h"
 #include "Components/SphereComponent.h"
+#include "Components/BoxComponent.h"
 
 // Sets default values
 ACryostatTCO::ACryostatTCO()
@@ -11,6 +11,10 @@ ACryostatTCO::ACryostatTCO()
     USphereComponent* SphereComponent = CreateDefaultSubobject<USphereComponent>( TEXT("RootComponent") );
     RootComponent = SphereComponent;
     SphereComponent->InitSphereRadius( 40.0f );
+
+    UBoxComponent* Box = CreateDefaultSubobject<UBoxComponent>( TEXT("BoxComponent"));
+
+
 }
 
 void ACryostatTCO::PreInitializeComponents()
@@ -22,6 +26,7 @@ void ACryostatTCO::PreInitializeComponents()
         auto actor = GetWorld()->SpawnActor<AStaticMeshActor>(FVector(), FRotator());
         actor->GetStaticMeshComponent()->SetStaticMesh(mesh);
         actor->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+        mesh_actors_.Add(actor);
     }
 }
 
