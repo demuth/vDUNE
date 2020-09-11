@@ -13,5 +13,12 @@ UCLASS()
 class ADuneController : public APlayerController
 {
 	GENERATED_BODY()
-	
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Widgets)
+	TSubclassOf<class UUserWidget> w_test_widget_;
+
+	UUserWidget* test_widget_;
+
+    virtual void BeginPlay() override;
 };
