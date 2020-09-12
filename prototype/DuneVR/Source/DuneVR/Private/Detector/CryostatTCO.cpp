@@ -11,10 +11,6 @@ ACryostatTCO::ACryostatTCO()
     USphereComponent* SphereComponent = CreateDefaultSubobject<USphereComponent>( TEXT("RootComponent") );
     RootComponent = SphereComponent;
     SphereComponent->InitSphereRadius( 40.0f );
-
-    UBoxComponent* Box = CreateDefaultSubobject<UBoxComponent>( TEXT("BoxComponent"));
-
-
 }
 
 void ACryostatTCO::PreInitializeComponents()

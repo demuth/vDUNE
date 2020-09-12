@@ -4,16 +4,25 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "PickupActor.generated.h"
+#include "AMeasurement.generated.h"
 
 UCLASS()
-class APickupActor : public AActor
+class AAMeasurement : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-    APickupActor();
+	AAMeasurement();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Measurement")
+	AActor* point_1_;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Measurement")
+	AActor* point_2_;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Measurement")
+    float measurement_;
 
 protected:
 	// Called when the game starts or when spawned
