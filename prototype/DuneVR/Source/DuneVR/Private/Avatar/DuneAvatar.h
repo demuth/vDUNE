@@ -34,6 +34,7 @@ public:
 	float BaseLookUpRate;
 
 protected:
+    virtual void Tick(float delta_seconds) override;
 
 	/** Resets HMD orientation in VR. */
 	void OnResetVR();
@@ -66,6 +67,9 @@ protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	// End of APawn interface
+
+	UFUNCTION(BlueprintCallable, Category=Pickup)
+	void detect_pickups();
 
 public:
 	/** Returns CameraBoom subobject **/

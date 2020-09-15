@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "PalpableActor.h"
 #include "PickupActor.generated.h"
 
 UCLASS()
-class APickupActor : public AActor
+class APickupActor : public APalpableActor
 {
 	GENERATED_BODY()
 
@@ -21,9 +21,7 @@ public:
     UFUNCTION(BlueprintCallable, Category=pickup)
     void set_state(bool pickup_is_active);
 
-    UFUNCTION(BlueprintNativeEvent)
     void on_pickup();
-    virtual void on_pickup_Implementation();
 
 protected:
 	// Called when the game starts or when spawned

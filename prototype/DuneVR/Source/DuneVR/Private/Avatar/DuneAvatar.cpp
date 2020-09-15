@@ -9,6 +9,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Interfaces/PickupActor.h"
 
 //////////////////////////////////////////////////////////////////////////
 // ADuneAvatar
@@ -46,7 +47,7 @@ ADuneAvatar::ADuneAvatar()
 
 	collection_sphere_ = CreateDefaultSubobject<USphereComponent>(TEXT("CollectionSphere"));
 	collection_sphere_->AttachTo(RootComponent);
-	collection_sphere_->SetSphereRadius(75.0f);
+	collection_sphere_->SetSphereRadius(200.0f);
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
@@ -81,6 +82,10 @@ void ADuneAvatar::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &ADuneAvatar::OnResetVR);
 }
 
+void ADuneAvatar::Tick(float delta_seconds)
+{
+    detect_pickups();
+}
 
 void ADuneAvatar::OnResetVR()
 {
@@ -136,4 +141,21 @@ void ADuneAvatar::MoveRight(float Value)
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
 	}
+}
+
+void ADuneAvatar::detect_pickups()
+{
+    TArray<AActor*> collected_actors;
+    GetCollectionSphere()->GetOverlappingActors(collected_actors);
+
+    for (int32 i = 0; i < collected_actors.Num(); ++i)
+    {
+        APickupActor* const pickup_candidate = Cast<APickupActor>(collected_actors[i]);
+        if (pickup_candidate && !pickup_candidate->IsPendingKill() && pickup_candidate->is_active())
+        {
+            pickup_candidate->on_pickup();
+
+            pickup_candidate->set_state(false);
+        }
+    }
 }

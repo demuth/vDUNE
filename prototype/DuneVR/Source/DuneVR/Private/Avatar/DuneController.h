@@ -15,10 +15,24 @@ class ADuneController : public APlayerController
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Widgets)
-	TSubclassOf<class UUserWidget> w_test_widget_;
+    ADuneController();
 
-	UUserWidget* test_widget_;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Widgets)
+	TSubclassOf<class UUserWidget> collectibles_widget_;
 
     virtual void BeginPlay() override;
+
+protected:
+    virtual void SetupInputComponent() override;
+
+    void toggle_collectibles_display();
+
+    UFUNCTION(BlueprintCallable, Category=menus)
+    void close_menu();
+
+private:
+    UUserWidget* w_collectibles_widget_;
+    bool is_showing_collectibles_;
+
+    void remove_menus();
 };
