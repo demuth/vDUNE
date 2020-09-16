@@ -2,6 +2,7 @@
 
 
 #include "PalpableActor.h"
+#include "../DuneAvatar.h"
 
 // Sets default values
 APalpableActor::APalpableActor()
@@ -23,5 +24,15 @@ void APalpableActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+bool APalpableActor::actor_interaction_viable(const AActor * const actor) const
+{
+    return true;
+}
+
+
+void APalpableActor::interact(ADuneAvatar * const actor)
+{
 }
 

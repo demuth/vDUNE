@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "AMeasurement.generated.h"
+#include "Measurement.generated.h"
 
 UCLASS()
-class AAMeasurement : public AActor
+class AMeasurement : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AAMeasurement();
+	AMeasurement();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Measurement")
 	AActor* point_1_;

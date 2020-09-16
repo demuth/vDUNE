@@ -10,6 +10,8 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Interfaces/PickupActor.h"
+#include "Interfaces/Collectible.h"
+#include "Interfaces/ViableInteraction.h"
 
 //////////////////////////////////////////////////////////////////////////
 // ADuneAvatar
@@ -80,11 +82,16 @@ void ADuneAvatar::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
 
 	// VR headset functionality
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &ADuneAvatar::OnResetVR);
+
+	// Interaction bindings
+    PlayerInputComponent->BindAction("Interact", IE_Released, this, &ADuneAvatar::pickup);
 }
 
 void ADuneAvatar::Tick(float delta_seconds)
 {
-    detect_pickups();
+    detect_viable_interactions();
+
+    update_viable_interactions();
 }
 
 void ADuneAvatar::OnResetVR()
@@ -143,7 +150,7 @@ void ADuneAvatar::MoveRight(float Value)
 	}
 }
 
-void ADuneAvatar::detect_pickups()
+void ADuneAvatar::detect_viable_interactions()
 {
     TArray<AActor*> collected_actors;
     GetCollectionSphere()->GetOverlappingActors(collected_actors);
@@ -151,11 +158,64 @@ void ADuneAvatar::detect_pickups()
     for (int32 i = 0; i < collected_actors.Num(); ++i)
     {
         APickupActor* const pickup_candidate = Cast<APickupActor>(collected_actors[i]);
+
+        //Executed on active pickups in the sphere of influence.
         if (pickup_candidate && !pickup_candidate->IsPendingKill() && pickup_candidate->is_active())
         {
-            pickup_candidate->on_pickup();
-
-            pickup_candidate->set_state(false);
+            if (pickup_candidate->actor_interaction_viable(this))
+            {
+                auto viable_interaction = NewObject<UViableInteraction>();
+                viable_interaction->initialize(this, pickup_candidate);
+                viable_interactions_.Add(pickup_candidate->GetName(), viable_interaction);
+            }
         }
+    }
+}
+
+void ADuneAvatar::update_viable_interactions()
+{
+    for (auto itr = viable_interactions_.CreateConstIterator(); itr; ++itr)
+    {
+        //if interactions are no longer viable remove them.
+        if (!itr.Value()->is_viable())
+            viable_interactions_.Remove(itr.Key());
+    }
+}
+
+void ADuneAvatar::pickup()
+{
+    for (auto itr = viable_interactions_.CreateConstIterator(); itr; ++itr)
+    {
+        auto interaction = itr.Value();
+
+        if (interaction)
+        {
+            interaction->commit();
+            viable_interactions_.Remove(itr.Key());
+        }
+        else
+        {
+            UE_LOG(LogClass, Error, TEXT("No viable interaction found for the object: %s"), *itr.Key());
+        }
+    }
+}
+
+TArray<UCollectible*> ADuneAvatar::get_collectibles()
+{
+    return collectibles_;
+}
+
+bool ADuneAvatar::add_collectible(UCollectible * collectible_data)
+{
+    if (collectible_data != nullptr)
+    {
+        UE_LOG(LogClass, Log, TEXT("Player collected: %s"), *collectible_data->collectible_name);
+        collectibles_.Add(collectible_data);
+        return true;
+    }
+    else
+    {
+        UE_LOG(LogClass, Warning, TEXT("Collectible returned null data."));
+        return false;
     }
 }

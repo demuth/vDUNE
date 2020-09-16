@@ -22,6 +22,15 @@ class ADuneAvatar : public ACharacter
     /** Collection Sphere */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Pickup, meta = (AllowPrivateAccess = "true"))
     class USphereComponent* collection_sphere_;
+
+    /** Inventory */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
+    TArray<class UCollectible *>  collectibles_;
+
+    /** Interaction objects */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
+    TMap<FString, class UViableInteraction *>  viable_interactions_;
+
 public:
 	ADuneAvatar();
 
@@ -69,7 +78,15 @@ protected:
 	// End of APawn interface
 
 	UFUNCTION(BlueprintCallable, Category=Pickup)
-	void detect_pickups();
+	void detect_viable_interactions();
+
+    UFUNCTION(BlueprintCallable, Category=Pickup)
+    void update_viable_interactions();
+
+	UFUNCTION(BlueprintCallable, Category=Inventory)
+	TArray<class UCollectible*> get_collectibles();
+
+    void pickup();
 
 public:
 	/** Returns CameraBoom subobject **/
@@ -78,5 +95,7 @@ public:
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
     /** Returns CollectionSphere subobject **/
     FORCEINLINE class USphereComponent* GetCollectionSphere() const { return collection_sphere_; }
+
+    bool add_collectible(class UCollectible * name);
 };
 
