@@ -86,6 +86,9 @@ protected:
 	UFUNCTION(BlueprintCallable, Category=Inventory)
 	TArray<class UCollectible*> get_collectibles();
 
+    UFUNCTION(BlueprintCallable, Category=Interfaces)
+    TMap<FString, class UViableInteraction *> get_viable_interactions();
+
     void pickup();
 
 public:
@@ -96,6 +99,6 @@ public:
     /** Returns CollectionSphere subobject **/
     FORCEINLINE class USphereComponent* GetCollectionSphere() const { return collection_sphere_; }
 
-    bool add_collectible(class UCollectible * name);
+    bool add_collectible(class UCollectible * collectible_data);
 };
 

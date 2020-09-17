@@ -6,10 +6,10 @@
 
 // Sets default values
 APalpableActor::APalpableActor()
+: interaction_radius_(100.0f)
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
@@ -26,7 +26,7 @@ void APalpableActor::Tick(float DeltaTime)
 
 }
 
-bool APalpableActor::actor_interaction_viable(const AActor * const actor) const
+bool APalpableActor::actor_interaction_viable(const ADuneAvatar * const actor) const
 {
     return true;
 }

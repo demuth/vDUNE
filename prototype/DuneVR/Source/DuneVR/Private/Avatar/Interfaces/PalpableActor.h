@@ -20,13 +20,13 @@ protected:
 	virtual void BeginPlay() override;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Pickup)
-    float interaction_radius_ = 100.0f;
+    float interaction_radius_;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	virtual bool actor_interaction_viable(const AActor * const actor) const;
+	virtual bool actor_interaction_viable(const class ADuneAvatar * const avatar) const;
 
-    virtual void interact(class ADuneAvatar * const actor);
+    virtual void interact(class ADuneAvatar * const avatar);
 };

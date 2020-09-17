@@ -9,19 +9,22 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType)
 class UViableInteraction : public UObject
 {
 	GENERATED_BODY()
 
 	UPROPERTY(VisibleAnywhere)
-	class APawn * pawn_;
+	class ADuneAvatar * avatar_;
 
     UPROPERTY(VisibleAnywhere)
 	class APalpableActor * palpable_object_;
 
+    UFUNCTION(BlueprintCallable, Category=Interfaces)
+    FString generate_user_instruction();
+
 public:
-    void initialize(class APawn * pawn, class APalpableActor * object);
+    void initialize(class ADuneAvatar * avatar, class APalpableActor * object);
 
 	bool is_viable();
 

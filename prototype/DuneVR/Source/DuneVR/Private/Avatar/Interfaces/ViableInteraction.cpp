@@ -6,30 +6,35 @@
 #include "GameFramework/Pawn.h"
 #include "../DuneAvatar.h"
 
-void UViableInteraction::initialize(class APawn * pawn, class APalpableActor * object)
+void UViableInteraction::initialize(class ADuneAvatar * avatar, class APalpableActor * object)
 {
-    pawn_ = pawn;
+    avatar_ = avatar;
     palpable_object_ = object;
+}
+
+FString UViableInteraction::generate_user_instruction()
+{
+    return FString::Printf(TEXT("Press the I key to pickup %s"), *palpable_object_->GetName());
 }
 
 bool UViableInteraction::is_viable()
 {
-    if (!pawn_ || !palpable_object_)
+    if (!avatar_ || !palpable_object_)
     {
         UE_LOG(LogClass, Error, TEXT("Interaction was not initialized. "))
         return false;
     }
 
-    return palpable_object_->actor_interaction_viable(pawn_);
+    return palpable_object_->actor_interaction_viable( avatar_ );
 }
 
 void UViableInteraction::commit()
 {
-    if (!pawn_ || !palpable_object_)
+    if (!avatar_ || !palpable_object_)
     {
         UE_LOG(LogClass, Error, TEXT("Interaction was not initialized. "))
         return;
     }
 
-    palpable_object_->interact(Cast<ADuneAvatar>(pawn_));
+    palpable_object_->interact( avatar_ );
 }

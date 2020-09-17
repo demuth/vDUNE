@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "PalpableActor.h"
+#include "../PalpableActor.h"
 #include "PickupActor.generated.h"
 
 UCLASS()
@@ -15,30 +15,30 @@ public:
 	// Sets default values for this actor's properties
     APickupActor();
 
-    UFUNCTION(BlueprintPure, Category=Pickup)
-    bool is_active() const;
-
-    UFUNCTION(BlueprintCallable, Category=Pickup)
-    void set_state(bool pickup_is_active);
-
-    class UCollectible * on_pickup();
-
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Pickup)
     FString name_;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Pickup)
     FString details_;
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+    class UCollectible * on_pickup();
 
-public:	
+    UFUNCTION(BlueprintPure, Category=Pickup)
+    bool is_active() const;
+
+    UFUNCTION(BlueprintCallable, Category=Pickup)
+    void set_state(bool pickup_is_active);
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-    virtual bool actor_interaction_viable(const AActor * const actor) const override;
-    virtual void interact(class ADuneAvatar * const actor) override;
+    virtual bool actor_interaction_viable(const ADuneAvatar * const avatar) const override;
+
+    virtual void interact(class ADuneAvatar * const avatar) override;
+
+protected:
+    // Called when the game starts or when spawned
+    virtual void BeginPlay() override;
 
 private:
     UPROPERTY(VisibleAnywhere, BlueprintReadonly, Category=Pickup, meta = (AllowPrivateAccess = "true"))

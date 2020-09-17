@@ -9,8 +9,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Interfaces/PickupActor.h"
-#include "Interfaces/Collectible.h"
+#include "Interfaces/Pickup/PickupActor.h"
+#include "Interfaces/Pickup/Collectible.h"
 #include "Interfaces/ViableInteraction.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -204,6 +204,12 @@ TArray<UCollectible*> ADuneAvatar::get_collectibles()
 {
     return collectibles_;
 }
+
+TMap<FString, class UViableInteraction *> ADuneAvatar::get_viable_interactions()
+{
+    return viable_interactions_;
+}
+
 
 bool ADuneAvatar::add_collectible(UCollectible * collectible_data)
 {

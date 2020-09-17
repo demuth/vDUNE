@@ -3,11 +3,12 @@
 
 #include "PickupActor.h"
 #include "Collectible.h"
-#include "../DuneAvatar.h"
+#include "../../DuneAvatar.h"
 
 // Sets default values
 APickupActor::APickupActor()
-: is_active_(true)
+: APalpableActor()
+, is_active_(true)
 {
 	PrimaryActorTick.bCanEverTick = false;
 
@@ -52,13 +53,13 @@ UCollectible * APickupActor::on_pickup()
     return collectible_data_;
 }
 
-bool APickupActor::actor_interaction_viable(const AActor * const actor) const
+bool APickupActor::actor_interaction_viable(const ADuneAvatar * const avatar) const
 {
-    if (!actor)
+    if (!avatar)
         return false;
 
     FVector point1 = this->GetActorLocation();
-    FVector point2 = actor->GetActorLocation();
+    FVector point2 = avatar->GetActorLocation();
 
     FVector displacement3D = point2 - point1;
     FVector2D displacement = FVector2D(displacement3D.X, displacement3D.Y);
