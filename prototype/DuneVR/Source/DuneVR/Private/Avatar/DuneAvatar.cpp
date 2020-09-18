@@ -11,6 +11,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Interfaces/Pickup/PickupActor.h"
 #include "Interfaces/Pickup/Collectible.h"
+#include "Interfaces/Observable/ObservableActor.h"
 #include "Interfaces/ViableInteraction.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -167,6 +168,19 @@ void ADuneAvatar::detect_viable_interactions()
                 auto viable_interaction = NewObject<UViableInteraction>();
                 viable_interaction->initialize(this, pickup_candidate);
                 viable_interactions_.Add(pickup_candidate->GetName(), viable_interaction);
+            }
+        }
+
+        AObservableActor* const observable_candidate = Cast<AObservableActor>(collected_actors[i]);
+
+        //Executed on active pickups in the sphere of influence.
+        if (observable_candidate && !observable_candidate->IsPendingKill())
+        {
+            if (observable_candidate->actor_interaction_viable(this))
+            {
+                auto viable_interaction = NewObject<UViableInteraction>();
+                viable_interaction->initialize(this, observable_candidate);
+                viable_interactions_.Add(observable_candidate->GetName(), viable_interaction);
             }
         }
     }

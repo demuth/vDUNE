@@ -3,6 +3,7 @@
 
 #include "ObservableActor.h"
 #include "../../DuneAvatar.h"
+#include "ObjectViewer.h"
 
 // Sets default values
 AObservableActor::AObservableActor()
@@ -11,13 +12,16 @@ AObservableActor::AObservableActor()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+    mesh_ = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("observable_mesh"));
+    RootComponent = mesh_;
 }
 
 // Called when the game starts or when spawned
 void AObservableActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	viewer_ = GetWorld()->SpawnActor<AObjectViewer>(this->GetActorLocation(), this->GetActorRotation());
 }
 
 // Called every frame
@@ -45,5 +49,7 @@ void AObservableActor::interact(ADuneAvatar * const avatar)
 {
     if (!avatar)
         return;
+
+    avatar->Controller->Possess(viewer_);
 }
 
