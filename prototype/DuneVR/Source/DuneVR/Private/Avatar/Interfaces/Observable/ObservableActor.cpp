@@ -21,7 +21,7 @@ void AObservableActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	viewer_ = GetWorld()->SpawnActor<AObjectViewer>(this->GetActorLocation(), this->GetActorRotation());
+	viewer_ = GetWorld()->SpawnActor<AObjectViewer>(this->GetActorLocation(), FRotator());
 }
 
 // Called every frame
