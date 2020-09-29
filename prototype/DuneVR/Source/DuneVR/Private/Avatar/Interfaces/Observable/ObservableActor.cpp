@@ -3,6 +3,7 @@
 
 #include "ObservableActor.h"
 #include "../../DuneAvatar.h"
+#include "../ViableInteraction.h"
 #include "ObjectViewer.h"
 
 // Sets default values
@@ -22,6 +23,8 @@ void AObservableActor::BeginPlay()
 	Super::BeginPlay();
 
 	viewer_ = GetWorld()->SpawnActor<AObjectViewer>(this->GetActorLocation(), FRotator());
+
+    viewer_->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 // Called every frame
@@ -45,11 +48,29 @@ bool AObservableActor::actor_interaction_viable(const ADuneAvatar * const avatar
     return (displacement.Size() < interaction_radius_);
 }
 
-void AObservableActor::interact(ADuneAvatar * const avatar)
+void AObservableActor::interact(ADuneAvatar * const avatar, UViableInteraction * interaction, bool &is_active)
 {
     if (!avatar)
         return;
 
-    avatar->Controller->Possess(viewer_);
-}
+    APalpableActor::interact(avatar, interaction, is_active);
 
+    if (!is_active)
+    {
+        if (avatar->Controller)
+        {
+            UE_LOG(LogClass, Log, TEXT("%s is possessing %s"), *avatar->GetName(), *this->GetName());
+            avatar->Controller->Possess( viewer_ );
+            is_active = true;
+        }
+    }
+    else
+    {
+        if (avatar->Controller)
+        {
+            UE_LOG(LogClass, Log, TEXT("%s is unpossessing %s"), *avatar->GetName(), *this->GetName());
+            avatar->Controller->Possess( avatar );
+            is_active = false;
+        }
+    }
+}

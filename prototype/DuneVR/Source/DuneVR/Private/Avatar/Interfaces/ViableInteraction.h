@@ -14,6 +14,8 @@ class UViableInteraction : public UObject
 {
 	GENERATED_BODY()
 
+	UViableInteraction();
+
 	UPROPERTY(VisibleAnywhere)
 	class ADuneAvatar * avatar_;
 
@@ -23,6 +25,8 @@ class UViableInteraction : public UObject
     UFUNCTION(BlueprintCallable, Category=Interfaces)
     FString generate_user_instruction();
 
+    bool is_active_;
+
 public:
     void initialize(class ADuneAvatar * avatar, class APalpableActor * object);
 
@@ -30,3 +34,5 @@ public:
 
 	void commit();
 };
+
+

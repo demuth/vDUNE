@@ -10,6 +10,9 @@ UCLASS()
 class APalpableActor : public AActor
 {
 	GENERATED_BODY()
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
+    TMap<FString, class UViableInteraction *>  viable_interactions_;
 	
 public:	
 	// Sets default values for this actor's properties
@@ -28,5 +31,5 @@ public:
 
 	virtual bool actor_interaction_viable(const class ADuneAvatar * const avatar) const;
 
-    virtual void interact(class ADuneAvatar * const avatar);
+    virtual void interact(class ADuneAvatar * const avatar, class UViableInteraction * interaction, bool &is_active);
 };

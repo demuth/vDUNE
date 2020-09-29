@@ -6,6 +6,12 @@
 #include "GameFramework/Pawn.h"
 #include "../DuneAvatar.h"
 
+UViableInteraction::UViableInteraction()
+: is_active_(false)
+{
+
+}
+
 void UViableInteraction::initialize(class ADuneAvatar * avatar, class APalpableActor * object)
 {
     avatar_ = avatar;
@@ -21,7 +27,7 @@ bool UViableInteraction::is_viable()
 {
     if (!avatar_ || !palpable_object_)
     {
-        UE_LOG(LogClass, Error, TEXT("Interaction was not initialized. "))
+        UE_LOG(LogClass, Error, TEXT("Interaction is not viable. "))
         return false;
     }
 
@@ -36,5 +42,5 @@ void UViableInteraction::commit()
         return;
     }
 
-    palpable_object_->interact( avatar_ );
+    palpable_object_->interact( avatar_, this, is_active_ );
 }

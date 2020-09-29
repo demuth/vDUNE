@@ -2,6 +2,8 @@
 
 
 #include "DuneController.h"
+#include "DuneAvatar.h"
+#include "Interfaces/Observable/ObjectViewer.h"
 #include "Blueprint/UserWidget.h"
 
 ADuneController::ADuneController()
@@ -23,6 +25,9 @@ void ADuneController::SetupInputComponent()
 
     // Set up menu key bindings
     InputComponent->BindAction("ShowCollectibles", IE_Released, this, &ADuneController::toggle_collectibles_display);
+
+    // Interaction bindings
+    InputComponent->BindAction("Interact", IE_Released, this, &ADuneController::on_interaction_command);
 }
 
 void ADuneController::toggle_collectibles_display()
@@ -61,6 +66,20 @@ void ADuneController::remove_menus()
     {
         GEngine->GameViewport->RemoveAllViewportWidgets();
     }
+}
+
+void ADuneController::on_interaction_command()
+{
+    auto avatar = Cast<ADuneAvatar>(GetPawn());
+
+    if (avatar)
+        avatar->try_interaction();
+
+
+    auto viewer = Cast<AObjectViewer>(GetPawn());
+
+    if (viewer)
+        viewer->try_end_viewer_session();
 }
 
 void ADuneController::close_menu()

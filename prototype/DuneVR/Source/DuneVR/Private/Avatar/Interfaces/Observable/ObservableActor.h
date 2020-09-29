@@ -6,6 +6,7 @@
 #include "../PalpableActor.h"
 #include "ObservableActor.generated.h"
 
+
 UCLASS()
 class AObservableActor : public APalpableActor
 {
@@ -31,6 +32,5 @@ public:
 
     virtual bool actor_interaction_viable(const ADuneAvatar * const avatar) const override;
 
-    virtual void interact(class ADuneAvatar * const avatar) override;
-
+    virtual void interact(class ADuneAvatar * const avatar, class UViableInteraction * interaction, bool &is_active) override;
 };

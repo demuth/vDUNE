@@ -23,18 +23,12 @@ public:
 
     class UCollectible * on_pickup();
 
-    UFUNCTION(BlueprintPure, Category=Pickup)
-    bool is_active() const;
-
-    UFUNCTION(BlueprintCallable, Category=Pickup)
-    void set_state(bool pickup_is_active);
-
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
     virtual bool actor_interaction_viable(const ADuneAvatar * const avatar) const override;
 
-    virtual void interact(class ADuneAvatar * const avatar) override;
+    virtual void interact(class ADuneAvatar * const avatar, class UViableInteraction * interaction, bool &is_active) override;
 
 protected:
     // Called when the game starts or when spawned
@@ -46,7 +40,4 @@ private:
 
     UPROPERTY(VisibleAnywhere, BlueprintReadonly, Category=Pickup, meta = (AllowPrivateAccess = "true"))
     class UCollectible * collectible_data_;
-
-    //true when the pickup is available false when it has been picked up.
-    bool is_active_;
 };

@@ -34,5 +34,6 @@ private:
     UUserWidget* w_collectibles_widget_;
     bool is_showing_collectibles_;
 
+    void on_interaction_command();
     void remove_menus();
 };

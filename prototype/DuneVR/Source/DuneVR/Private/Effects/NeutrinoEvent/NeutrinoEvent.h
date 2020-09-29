@@ -15,8 +15,7 @@ public:
 	// Sets default values for this actor's properties
 	ANeutrinoEvent();
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Particles)
-    class UParticleSystemComponent *particle_system_;
+    TArray<class USphereComponent*> component_list_;
 
 protected:
 	// Called when the game starts or when spawned

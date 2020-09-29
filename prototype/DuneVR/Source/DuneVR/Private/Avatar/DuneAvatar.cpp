@@ -84,8 +84,8 @@ void ADuneAvatar::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
 	// VR headset functionality
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &ADuneAvatar::OnResetVR);
 
-	// Interaction bindings
-    PlayerInputComponent->BindAction("Interact", IE_Released, this, &ADuneAvatar::pickup);
+    PlayerInputComponent->BindAction("MeasureMode", IE_Released, this, &ACharacter::toggle_measure_mode);
+    PlayerInputComponent->BindAction("MeasurePlace", IE_Released, this, &ACharacter::toggle_measure_mode);
 }
 
 void ADuneAvatar::Tick(float delta_seconds)
@@ -161,7 +161,7 @@ void ADuneAvatar::detect_viable_interactions()
         APickupActor* const pickup_candidate = Cast<APickupActor>(collected_actors[i]);
 
         //Executed on active pickups in the sphere of influence.
-        if (pickup_candidate && !pickup_candidate->IsPendingKill() && pickup_candidate->is_active())
+        if (pickup_candidate && !pickup_candidate->IsPendingKill())
         {
             if (pickup_candidate->actor_interaction_viable(this))
             {
@@ -176,7 +176,7 @@ void ADuneAvatar::detect_viable_interactions()
         //Executed on active pickups in the sphere of influence.
         if (observable_candidate && !observable_candidate->IsPendingKill())
         {
-            if (observable_candidate->actor_interaction_viable(this))
+            if (observable_candidate->actor_interaction_viable(this) && !viable_interactions_.Find(observable_candidate->GetName()))
             {
                 auto viable_interaction = NewObject<UViableInteraction>();
                 viable_interaction->initialize(this, observable_candidate);
@@ -196,8 +196,10 @@ void ADuneAvatar::update_viable_interactions()
     }
 }
 
-void ADuneAvatar::pickup()
+void ADuneAvatar::try_interaction()
 {
+    UE_LOG(LogClass, Log, TEXT("%s is trying to initiate an interaction. "), *this->GetName());
+
     for (auto itr = viable_interactions_.CreateConstIterator(); itr; ++itr)
     {
         auto interaction = itr.Value();
@@ -205,7 +207,9 @@ void ADuneAvatar::pickup()
         if (interaction)
         {
             interaction->commit();
-            viable_interactions_.Remove(itr.Key());
+
+//            if (!interaction->is_active())
+//                viable_interactions_.Remove(itr.Key());
         }
         else
         {

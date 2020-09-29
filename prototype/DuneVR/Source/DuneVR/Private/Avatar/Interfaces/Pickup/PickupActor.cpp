@@ -4,11 +4,11 @@
 #include "PickupActor.h"
 #include "Collectible.h"
 #include "../../DuneAvatar.h"
+#include "../ViableInteraction.h"
 
 // Sets default values
 APickupActor::APickupActor()
 : APalpableActor()
-, is_active_(true)
 {
 	PrimaryActorTick.bCanEverTick = false;
 
@@ -31,16 +31,6 @@ void APickupActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-}
-
-bool APickupActor::is_active() const
-{
-    return is_active_;
-}
-
-void APickupActor::set_state(bool pickup_is_active)
-{
-    is_active_ = pickup_is_active;
 }
 
 UCollectible * APickupActor::on_pickup()
@@ -67,9 +57,16 @@ bool APickupActor::actor_interaction_viable(const ADuneAvatar * const avatar) co
     return (displacement.Size() < interaction_radius_);
 }
 
-void APickupActor::interact(ADuneAvatar * const avatar)
+void APickupActor::interact(ADuneAvatar * const avatar, UViableInteraction * interaction, bool &is_active)
 {
-    if (avatar && avatar->add_collectible(this->on_pickup()))
-        this->set_state(false);
+    if (avatar)
+    {
+        avatar->add_collectible(this->on_pickup());
+        is_active = false;
+    }
+    else
+    {
+        is_active = false;
+    }
 }
 

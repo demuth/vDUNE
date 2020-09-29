@@ -89,8 +89,6 @@ protected:
     UFUNCTION(BlueprintCallable, Category=Interfaces)
     TMap<FString, class UViableInteraction *> get_viable_interactions();
 
-    void pickup();
-
 public:
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
@@ -100,5 +98,9 @@ public:
     FORCEINLINE class USphereComponent* GetCollectionSphere() const { return collection_sphere_; }
 
     bool add_collectible(class UCollectible * collectible_data);
+
+    void try_interaction();
+
+    void toggle_measure_mode();
 };
 

@@ -3,6 +3,7 @@
 
 #include "PalpableActor.h"
 #include "../DuneAvatar.h"
+#include "ViableInteraction.h"
 
 // Sets default values
 APalpableActor::APalpableActor()
@@ -32,7 +33,8 @@ bool APalpableActor::actor_interaction_viable(const ADuneAvatar * const actor) c
 }
 
 
-void APalpableActor::interact(ADuneAvatar * const actor)
+void APalpableActor::interact(ADuneAvatar * const avatar, UViableInteraction * interaction, bool &is_active)
 {
+    if (this->actor_interaction_viable(avatar))
+        viable_interactions_.Add(avatar->GetName(), interaction);
 }
-
