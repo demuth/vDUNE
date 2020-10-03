@@ -17,9 +17,6 @@ class ADuneController : public APlayerController
 public:
     ADuneController();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Widgets)
-	TSubclassOf<class UUserWidget> collectibles_widget_;
-
     virtual void BeginPlay() override;
 
     void update_hud();
@@ -29,15 +26,10 @@ public:
 protected:
     virtual void SetupInputComponent() override;
 
-    void toggle_collectibles_display();
-
     UFUNCTION(BlueprintCallable, Category=menus)
     void close_menu();
 
 private:
-    UUserWidget* w_collectibles_widget_;
-    bool is_showing_collectibles_;
-
+    void toggle_collectibles_display();
     void on_interaction_command();
-    void remove_menus();
 };
