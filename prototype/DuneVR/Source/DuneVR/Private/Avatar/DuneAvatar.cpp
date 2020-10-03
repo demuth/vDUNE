@@ -1,6 +1,7 @@
 // Copyright 1998-2019 Epic Games, Inc. All Rights Reserved.
 
 #include "DuneAvatar.h"
+#include "DuneController.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -13,6 +14,7 @@
 #include "Interfaces/Pickup/Collectible.h"
 #include "Interfaces/Observable/ObservableActor.h"
 #include "Interfaces/ViableInteraction.h"
+#include "Tools/AvatarTool.h"
 
 //////////////////////////////////////////////////////////////////////////
 // ADuneAvatar
@@ -52,6 +54,12 @@ ADuneAvatar::ADuneAvatar()
 	collection_sphere_->AttachTo(RootComponent);
 	collection_sphere_->SetSphereRadius(200.0f);
 
+    available_tool_.Add(EAvatarTool::None, nullptr);
+	available_tool_.Add(EAvatarTool::MeasureTool, nullptr);
+
+    available_mode_.Add(EAvatarMode::Normal, nullptr);
+    available_mode_.Add(EAvatarMode::PickupsMenu, nullptr);
+
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 }
@@ -84,14 +92,16 @@ void ADuneAvatar::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
 	// VR headset functionality
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &ADuneAvatar::OnResetVR);
 
-    PlayerInputComponent->BindAction("MeasureMode", IE_Released, this, &ACharacter::toggle_measure_mode);
-    PlayerInputComponent->BindAction("MeasurePlace", IE_Released, this, &ACharacter::toggle_measure_mode);
+    PlayerInputComponent->BindAction("MeasureMode", IE_Released, this, &ADuneAvatar::set_measure_mode);
+    PlayerInputComponent->BindAction("MeasurePlace", IE_Released, this, &ADuneAvatar::place_measure_marker);
 }
 
 void ADuneAvatar::Tick(float delta_seconds)
 {
-    detect_viable_interactions();
+    CameraBoom->SetWorldLocation((mode_ != nullptr) ? mode_->calculate_camera_displacement(this->GetFollowCamera()->GetForwardVector(), this->GetActorLocation()) : this->GetActorLocation());
+    CameraBoom->TargetArmLength = (mode_ != nullptr) ? mode_->calculate_camera_arm_length() : 300.0f;
 
+    detect_viable_interactions();
     update_viable_interactions();
 }
 
@@ -207,9 +217,6 @@ void ADuneAvatar::try_interaction()
         if (interaction)
         {
             interaction->commit();
-
-//            if (!interaction->is_active())
-//                viable_interactions_.Remove(itr.Key());
         }
         else
         {
@@ -242,4 +249,75 @@ bool ADuneAvatar::add_collectible(UCollectible * collectible_data)
         UE_LOG(LogClass, Warning, TEXT("Collectible returned null data."));
         return false;
     }
+}
+
+void ADuneAvatar::set_measure_mode()
+{
+    if (mode_ == nullptr)
+    {
+        this->use_tool(EAvatarTool::MeasureTool);
+    }
+    else
+    {
+        this->use_tool(EAvatarTool::None);
+    }
+
+}
+
+void ADuneAvatar::use_tool(EAvatarTool tool)
+{
+    auto type = available_tool_.Find(tool);
+
+    //tear down any existing mode.
+    if (mode_)
+        mode_->teardown();
+
+    if (type || type->Get() == nullptr)
+    {
+        UE_LOG(LogClass, Error, TEXT("Tool class was not found. "));
+        mode_ = nullptr;
+    }
+    else
+    {
+        //assign a new mode instance and set it up.
+        if (type)
+            mode_ = NewObject<UAvatarTool>(this, type->Get());
+
+        if (mode_)
+            mode_->setup( this, &GetWorldTimerManager() );
+    }
+}
+
+void ADuneAvatar::set_mode(EAvatarMode mode)
+{
+    auto type = available_mode_.Find(mode);
+    auto controller = this->GetController<ADuneController>();
+
+    //tear down any existing mode.
+    if (mode_ != nullptr)
+        mode_->teardown();
+
+    if (!type || type->Get() == nullptr)
+    {
+        UE_LOG(LogClass, Error, TEXT("Tool class was not found. "));
+        mode_ = nullptr;
+    }
+    else
+    {
+        //assign a new mode instance and set it up.
+        if (controller != nullptr)
+        {
+            mode_ = NewObject<UAvatarMode>(this, type->Get());
+            controller->update_hud();
+
+            //mode_ was reassigned therefore check that it is still valid.
+            if (mode_ != nullptr)
+                mode_->setup( this, &GetWorldTimerManager() );
+        }
+    }
+}
+
+void ADuneAvatar::place_measure_marker()
+{
+
 }

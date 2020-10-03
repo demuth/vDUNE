@@ -3,6 +3,7 @@
 
 #include "DuneController.h"
 #include "DuneAvatar.h"
+#include "DuneHUD.h"
 #include "Interfaces/Observable/ObjectViewer.h"
 #include "Blueprint/UserWidget.h"
 
@@ -33,31 +34,39 @@ void ADuneController::SetupInputComponent()
 void ADuneController::toggle_collectibles_display()
 {
     UE_LOG(LogClass, Log, TEXT("toggle collectible screen"));
-    if(collectibles_widget_)
-    {
-        w_collectibles_widget_ = CreateWidget<UUserWidget>(this, collectibles_widget_);
+    ADuneAvatar * avatar = Cast<ADuneAvatar>(GetPawn());
 
-        if (w_collectibles_widget_)
-        {
-            if (!is_showing_collectibles_)
-            {
-                if (this->SetPause(true))
-                {
-                    w_collectibles_widget_->AddToViewport();
-                    is_showing_collectibles_ = true;
-                    bShowMouseCursor = true;
-                }
-                else
-                {
-                    UE_LOG(LogClass, Warning, TEXT("Failed to open collectibles."));
-                }
-            }
-            else
-            {
-                this->close_menu();
-            }
-        }
+    if (avatar)
+    {
+        avatar->set_mode(EAvatarMode::PickupsMenu);
     }
+
+
+//    if(collectibles_widget_)
+//    {
+//        w_collectibles_widget_ = CreateWidget<UUserWidget>(this, collectibles_widget_);
+//
+//        if (w_collectibles_widget_)
+//        {
+//            if (!is_showing_collectibles_)
+//            {
+//                if (this->SetPause(true))
+//                {
+//                    w_collectibles_widget_->AddToViewport();
+//                    is_showing_collectibles_ = true;
+//                    bShowMouseCursor = true;
+//                }
+//                else
+//                {
+//                    UE_LOG(LogClass, Warning, TEXT("Failed to open collectibles."));
+//                }
+//            }
+//            else
+//            {
+//                this->close_menu();
+//            }
+//        }
+//    }
 }
 
 void ADuneController::remove_menus()
@@ -84,14 +93,34 @@ void ADuneController::on_interaction_command()
 
 void ADuneController::close_menu()
 {
-    if (this->SetPause(false))
+    UE_LOG(LogClass, Log, TEXT("Attempting to close the menu. . ."));
+    ADuneAvatar * avatar = Cast<ADuneAvatar>(GetPawn());
+
+    if (avatar != nullptr)
     {
-        this->remove_menus();
-        is_showing_collectibles_ = false;
-        bShowMouseCursor = false;
+        avatar->set_mode(EAvatarMode::Normal);
     }
     else
     {
-        UE_LOG(LogClass, Warning, TEXT("Failed to leave collectibles."));
+        UE_LOG(LogClass, Error, TEXT("Failed to close the menu. "));
     }
+}
+
+void ADuneController::update_hud()
+{
+    auto hud = GetHUD<ADuneHUD>();
+
+    if (hud != nullptr)
+    {
+        hud->update_hud_widget();
+    }
+    else
+    {
+        UE_LOG(LogClass, Warning, TEXT("Controller could not update the hud. "));
+    }
+}
+
+UUserWidget * ADuneController::new_widget(TSubclassOf<UUserWidget> type)
+{
+    return CreateWidget<UUserWidget>(this, type);
 }

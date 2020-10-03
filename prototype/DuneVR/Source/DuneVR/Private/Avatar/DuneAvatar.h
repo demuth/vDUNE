@@ -4,7 +4,22 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Tools/AvatarTool.h"
 #include "DuneAvatar.generated.h"
+
+UENUM(BlueprintType)
+enum class EAvatarTool : uint8
+{
+    None,
+    MeasureTool
+};
+
+UENUM(BlueprintType)
+enum class EAvatarMode : uint8
+{
+    Normal,
+    PickupsMenu
+};
 
 UCLASS(config=Game)
 class ADuneAvatar : public ACharacter
@@ -30,6 +45,16 @@ class ADuneAvatar : public ACharacter
     /** Interaction objects */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
     TMap<FString, class UViableInteraction *>  viable_interactions_;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Mode, meta = (AllowPrivateAccess = "true"))
+    class UAvatarMode * mode_;
+
+protected:
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tools, EditFixedSize = "true")
+    TMap<EAvatarTool, TSubclassOf<UAvatarTool>>  available_tool_;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tools, EditFixedSize = "true")
+    TMap<EAvatarMode, TSubclassOf<UAvatarMode>>  available_mode_;
 
 public:
 	ADuneAvatar();
@@ -89,6 +114,11 @@ protected:
     UFUNCTION(BlueprintCallable, Category=Interfaces)
     TMap<FString, class UViableInteraction *> get_viable_interactions();
 
+    UFUNCTION(BlueprintCallable, Category=Mode)
+    void use_tool(EAvatarTool tool);
+
+
+
 public:
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
@@ -96,11 +126,16 @@ public:
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
     /** Returns CollectionSphere subobject **/
     FORCEINLINE class USphereComponent* GetCollectionSphere() const { return collection_sphere_; }
+    /** Returns Avatar Mode subobject **/
+    FORCEINLINE const class UAvatarMode* GetAvatarMode() const { return mode_; }
 
     bool add_collectible(class UCollectible * collectible_data);
 
     void try_interaction();
+    void set_measure_mode();
+    void place_measure_marker();
 
-    void toggle_measure_mode();
+    UFUNCTION(BlueprintCallable, Category=Mode)
+    void set_mode(EAvatarMode mode);
 };
 
