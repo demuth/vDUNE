@@ -272,7 +272,7 @@ void ADuneAvatar::use_tool(EAvatarTool tool)
     if (mode_)
         mode_->teardown();
 
-    if (type || type->Get() == nullptr)
+    if (!type || type->Get() == nullptr)
     {
         UE_LOG(LogClass, Error, TEXT("Tool class was not found. "));
         mode_ = nullptr;
