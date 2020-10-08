@@ -25,9 +25,15 @@ FString UViableInteraction::generate_user_instruction()
 
 bool UViableInteraction::is_viable()
 {
-    if (!avatar_ || !palpable_object_)
+    if (!avatar_ || avatar_->IsPendingKill())
     {
-        UE_LOG(LogClass, Error, TEXT("Interaction is not viable. "))
+        UE_LOG(LogClass, Error, TEXT("Interaction was not initialized. "))
+        return false;
+    }
+
+    if (!palpable_object_ || palpable_object_->IsPendingKill())
+    {
+        UE_LOG(LogClass, Error, TEXT("Interaction was not initialized. "))
         return false;
     }
 
@@ -36,7 +42,13 @@ bool UViableInteraction::is_viable()
 
 void UViableInteraction::commit()
 {
-    if (!avatar_ || !palpable_object_)
+    if (!avatar_ || avatar_->IsPendingKill())
+    {
+        UE_LOG(LogClass, Error, TEXT("Interaction was not initialized. "))
+        return;
+    }
+
+    if (!palpable_object_ || palpable_object_->IsPendingKill())
     {
         UE_LOG(LogClass, Error, TEXT("Interaction was not initialized. "))
         return;

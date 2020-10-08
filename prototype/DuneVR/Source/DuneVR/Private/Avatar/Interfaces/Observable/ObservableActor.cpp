@@ -22,7 +22,7 @@ void AObservableActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	viewer_ = GetWorld()->SpawnActor<AObjectViewer>(this->GetActorLocation(), FRotator());
+	viewer_ = GetWorld()->SpawnActor<AObjectViewer>(this->GetActorLocation(), FRotator(0, 0, 180));
 
     viewer_->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
 }

@@ -173,7 +173,7 @@ void ADuneAvatar::detect_viable_interactions()
         //Executed on active pickups in the sphere of influence.
         if (pickup_candidate && !pickup_candidate->IsPendingKill())
         {
-            if (pickup_candidate->actor_interaction_viable(this))
+            if (pickup_candidate->actor_interaction_viable(this)  && !viable_interactions_.Find(pickup_candidate->GetName()))
             {
                 auto viable_interaction = NewObject<UViableInteraction>();
                 viable_interaction->initialize(this, pickup_candidate);
@@ -259,7 +259,7 @@ void ADuneAvatar::set_measure_mode()
     }
     else
     {
-        this->use_tool(EAvatarTool::None);
+        this->set_mode(EAvatarMode::Normal);
     }
 
 }
