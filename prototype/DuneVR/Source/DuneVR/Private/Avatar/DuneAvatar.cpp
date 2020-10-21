@@ -57,8 +57,8 @@ ADuneAvatar::ADuneAvatar()
     available_tool_.Add(EAvatarTool::None, nullptr);
 	available_tool_.Add(EAvatarTool::MeasureTool, nullptr);
 
-    available_mode_.Add(EAvatarMode::Normal, nullptr);
-    available_mode_.Add(EAvatarMode::PickupsMenu, nullptr);
+    available_mode_.Add(EAvatarMode::Roam, nullptr);
+    available_mode_.Add(EAvatarMode::Menu, nullptr);
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
@@ -253,13 +253,15 @@ bool ADuneAvatar::add_collectible(UCollectible * collectible_data)
 
 void ADuneAvatar::set_measure_mode()
 {
-    if (mode_ == nullptr)
+    auto tool = Cast<UAvatarTool>(mode_);
+
+    if (!tool || tool->get_tool_type() != EAvatarTool::MeasureTool)
     {
         this->use_tool(EAvatarTool::MeasureTool);
     }
     else
     {
-        this->set_mode(EAvatarMode::Normal);
+        this->set_mode(EAvatarMode::Roam);
     }
 
 }

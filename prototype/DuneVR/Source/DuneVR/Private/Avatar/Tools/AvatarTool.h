@@ -4,7 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
-#include "../AvatarMode.h"
+#include "../Modes/AvatarMode.h"
+#include "EAvatarTool.h"
 #include "AvatarTool.generated.h"
 
 /**
@@ -18,13 +19,8 @@ class UAvatarTool : public UAvatarMode
 public:
     UAvatarTool();
 
-	virtual void update() override;
+	EAvatarTool get_tool_type();
 
 protected:
-    virtual void setup(class APawn * pawn, FTimerManager *manager) override;
-    virtual FVector calculate_camera_displacement(FVector avatar_forward_vector, FVector avatar_world_location) override;
-    virtual float calculate_camera_arm_length() override;
-
-private:
-
+    EAvatarTool tool_type_;
 };

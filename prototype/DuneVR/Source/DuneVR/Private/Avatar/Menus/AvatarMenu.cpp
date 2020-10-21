@@ -5,6 +5,17 @@
 #include "GameFramework/Pawn.h"
 #include "GameFramework/PlayerController.h"
 
+UAvatarMenu::UAvatarMenu()
+{
+    mode_type_ = EAvatarMode::Menu;
+}
+
+
+UAvatarMenu::~UAvatarMenu()
+{
+
+}
+
 void UAvatarMenu::setup(APawn * pawn, FTimerManager *manager)
 {
     UAvatarMode::setup(pawn, manager);

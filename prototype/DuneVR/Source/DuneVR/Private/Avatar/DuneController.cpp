@@ -35,7 +35,7 @@ void ADuneController::toggle_collectibles_display()
 
     if (avatar)
     {
-        avatar->set_mode(EAvatarMode::PickupsMenu);
+        avatar->set_mode(EAvatarMode::Menu);
     }
 }
 
@@ -60,7 +60,7 @@ void ADuneController::close_menu()
 
     if (avatar != nullptr)
     {
-        avatar->set_mode(EAvatarMode::Normal);
+        avatar->set_mode(EAvatarMode::Roam);
     }
     else
     {

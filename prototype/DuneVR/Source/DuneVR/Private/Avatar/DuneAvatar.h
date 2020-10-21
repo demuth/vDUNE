@@ -5,21 +5,11 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Tools/AvatarTool.h"
+#include "Tools/EAvatarTool.h"
+#include "Modes/EAvatarMode.h"
 #include "DuneAvatar.generated.h"
 
-UENUM(BlueprintType)
-enum class EAvatarTool : uint8
-{
-    None,
-    MeasureTool
-};
 
-UENUM(BlueprintType)
-enum class EAvatarMode : uint8
-{
-    Normal,
-    PickupsMenu
-};
 
 UCLASS(config=Game)
 class ADuneAvatar : public ACharacter
