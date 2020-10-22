@@ -49,8 +49,8 @@ void UInspectTool::update()
     {
         if(result.bBlockingHit)
         {
-            DrawDebugLine(GetWorld(), (avatar_mesh != nullptr)?avatar_mesh->GetSocketLocation(socket_name_):start + FVector(0,0,100), result.ImpactPoint, FColor::Cyan, false, 0.5f, 0, 1);
-            DrawDebugSphere(GetWorld(), result.ImpactPoint, 50, 12, FColor(181,0,0), false, 1.0f, 0, 2);
+            DrawDebugLine(GetWorld(), (avatar_mesh != nullptr)?avatar_mesh->GetSocketLocation(socket_name_):start + FVector(0,300,0), result.ImpactPoint, FColor::Cyan, false, 0.5f, 0, 1);
+//            DrawDebugSphere(GetWorld(), result.ImpactPoint, 50, 12, FColor(181,0,0), false, 1.0f, 0, 2);
         }
     }
 }

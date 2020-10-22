@@ -122,6 +122,8 @@ public:
     bool add_collectible(class UCollectible * collectible_data);
 
     void try_interaction();
+
+    void set_inspect_mode();
     void set_measure_mode();
     void place_measure_marker();
 

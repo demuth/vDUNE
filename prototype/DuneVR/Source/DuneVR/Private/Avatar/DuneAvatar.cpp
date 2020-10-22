@@ -95,6 +95,8 @@ void ADuneAvatar::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
 
     PlayerInputComponent->BindAction("MeasureMode", IE_Released, this, &ADuneAvatar::set_measure_mode);
     PlayerInputComponent->BindAction("MeasurePlace", IE_Released, this, &ADuneAvatar::place_measure_marker);
+
+    PlayerInputComponent->BindAction("InspectMode", IE_Released, this, &ADuneAvatar::set_inspect_mode);
 }
 
 void ADuneAvatar::Tick(float delta_seconds)
@@ -250,6 +252,21 @@ bool ADuneAvatar::add_collectible(UCollectible * collectible_data)
         UE_LOG(LogClass, Warning, TEXT("Collectible returned null data."));
         return false;
     }
+}
+
+void ADuneAvatar::set_inspect_mode()
+{
+    auto tool = Cast<UAvatarTool>(mode_);
+
+    if (!tool || tool->get_tool_type() != EAvatarTool::InspectTool)
+    {
+        this->use_tool(EAvatarTool::InspectTool);
+    }
+    else
+    {
+        this->set_mode(EAvatarMode::Roam);
+    }
+
 }
 
 void ADuneAvatar::set_measure_mode()
