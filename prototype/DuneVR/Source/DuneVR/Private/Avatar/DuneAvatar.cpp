@@ -56,6 +56,7 @@ ADuneAvatar::ADuneAvatar()
 
     available_tool_.Add(EAvatarTool::None, nullptr);
 	available_tool_.Add(EAvatarTool::MeasureTool, nullptr);
+	available_tool_.Add(EAvatarTool::InspectTool, nullptr);
 
     available_mode_.Add(EAvatarMode::Roam, nullptr);
     available_mode_.Add(EAvatarMode::Menu, nullptr);

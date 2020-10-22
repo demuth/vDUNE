@@ -8,5 +8,6 @@ UENUM(BlueprintType)
 enum class EAvatarTool : uint8
 {
     None = 0,
-    MeasureTool
+    MeasureTool,
+    InspectTool
 };
