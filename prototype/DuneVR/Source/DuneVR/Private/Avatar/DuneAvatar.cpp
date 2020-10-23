@@ -287,6 +287,7 @@ void ADuneAvatar::set_measure_mode()
 void ADuneAvatar::use_tool(EAvatarTool tool)
 {
     auto type = available_tool_.Find(tool);
+    auto controller = this->GetController<ADuneController>();
 
     //tear down any existing mode.
     if (mode_)
@@ -299,12 +300,15 @@ void ADuneAvatar::use_tool(EAvatarTool tool)
     }
     else
     {
-        //assign a new mode instance and set it up.
-        if (type)
+        if (controller != nullptr)
+        {
+            //assign a new mode instance and set it up.
             mode_ = NewObject<UAvatarTool>(this, type->Get());
+            controller->update_hud();
 
-        if (mode_)
-            mode_->setup( this, &GetWorldTimerManager() );
+            if (mode_)
+                mode_->setup( this, &GetWorldTimerManager() );
+        }
     }
 }
 

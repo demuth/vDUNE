@@ -9,7 +9,6 @@
 void ADuneHUD::BeginPlay()
 {
     Super::BeginPlay();
-    GetWorldTimerManager().SetTimer(timer_handle_, this, &ADuneHUD::update_hud_widget, 0.25f, true, 0.0f);
 }
 
 void ADuneHUD::DrawHUD()
@@ -19,7 +18,7 @@ void ADuneHUD::DrawHUD()
 
 void ADuneHUD::update_hud_widget()
 {
-    UE_LOG(LogClass, Log, TEXT("Updating HUD widget. . ."))
+    UE_LOG(LogClass, Log, TEXT("Updating HUD widget. . ."));
     auto avatar = Cast<ADuneAvatar>(GetOwningPawn());
 
     if (avatar)
