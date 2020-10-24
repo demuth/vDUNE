@@ -11,7 +11,7 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Interfaces/Pickup/PickupActor.h"
-#include "Interfaces/Pickup/Collectible.h"
+#include "Interfaces/Pickup/PickupModel.h"
 #include "Interfaces/Observable/ObservableActor.h"
 #include "Interfaces/ViableInteraction.h"
 #include "Tools/AvatarTool.h"
@@ -228,22 +228,22 @@ void ADuneAvatar::try_interaction()
     }
 }
 
-TArray<UCollectible*> ADuneAvatar::get_collectibles()
+TArray<UPickupModel*> ADuneAvatar::get_collectibles() const
 {
     return collectibles_;
 }
 
-TMap<FString, class UViableInteraction *> ADuneAvatar::get_viable_interactions()
+TMap<FString, class UViableInteraction *> ADuneAvatar::get_viable_interactions() const
 {
     return viable_interactions_;
 }
 
 
-bool ADuneAvatar::add_collectible(UCollectible * collectible_data)
+bool ADuneAvatar::add_collectible(UPickupModel * collectible_data)
 {
     if (collectible_data != nullptr)
     {
-        UE_LOG(LogClass, Log, TEXT("Player collected: %s"), *collectible_data->collectible_name);
+        UE_LOG(LogClass, Log, TEXT("Player collected: %s"), *collectible_data->get_name());
         collectibles_.Add(collectible_data);
         return true;
     }

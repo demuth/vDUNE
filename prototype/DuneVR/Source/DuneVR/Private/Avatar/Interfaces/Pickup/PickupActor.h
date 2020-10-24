@@ -21,7 +21,7 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Pickup)
     FString details_;
 
-    class UCollectible * on_pickup();
+    class UPickupModel * on_pickup();
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -39,5 +39,5 @@ private:
     class UStaticMeshComponent* mesh_;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadonly, Category=Pickup, meta = (AllowPrivateAccess = "true"))
-    class UCollectible * collectible_data_;
+    class UPickupModel * pickup_data_;
 };

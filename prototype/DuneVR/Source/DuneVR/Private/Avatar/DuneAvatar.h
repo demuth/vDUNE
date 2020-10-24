@@ -30,7 +30,7 @@ class ADuneAvatar : public ACharacter
 
     /** Inventory */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
-    TArray<class UCollectible *>  collectibles_;
+    TArray<class UPickupModel *>  collectibles_;
 
     /** Interaction objects */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
@@ -110,16 +110,13 @@ protected:
 
 
 public:
-	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
-	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
-    /** Returns CollectionSphere subobject **/
     FORCEINLINE class USphereComponent* GetCollectionSphere() const { return collection_sphere_; }
-    /** Returns Avatar Mode subobject **/
     FORCEINLINE const class UAvatarMode* GetAvatarMode() const { return mode_; }
 
-    bool add_collectible(class UCollectible * collectible_data);
+
+    bool add_collectible(class UPickupModel * collectible_data);
 
     void try_interaction();
 
@@ -130,4 +127,6 @@ public:
     UFUNCTION(BlueprintCallable, Category=Mode)
     void set_mode(EAvatarMode mode);
 };
+
+
 

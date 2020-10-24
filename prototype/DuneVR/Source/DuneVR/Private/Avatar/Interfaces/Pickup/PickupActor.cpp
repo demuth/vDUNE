@@ -61,7 +61,10 @@ void APickupActor::interact(ADuneAvatar * const avatar, UViableInteraction * int
 {
     if (avatar)
     {
-        avatar->add_collectible(this->on_pickup());
+        auto data = this->on_pickup();
+
+        avatar->add_collectible(data);
+
         is_active = false;
     }
     else
