@@ -8,3 +8,13 @@ void UPickupModel::Initialize(FString name, FString details)
     collectible_name_ = name;
     collectible_details_ = details;
 }
+
+FString UPickupModel::get_name() const
+{
+    return collectible_name_;
+}
+
+FString UPickupModel::get_details() const
+{
+    return collectible_details_;
+}
