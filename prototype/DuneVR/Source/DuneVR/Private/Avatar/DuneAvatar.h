@@ -99,10 +99,10 @@ protected:
     void update_viable_interactions();
 
 	UFUNCTION(BlueprintCallable, Category=Inventory)
-	TArray<class UCollectible*> get_collectibles();
+	TArray<class UPickupModel*> get_collectibles() const;
 
     UFUNCTION(BlueprintCallable, Category=Interfaces)
-    TMap<FString, class UViableInteraction *> get_viable_interactions();
+    TMap<FString, class UViableInteraction *> get_viable_interactions() const;
 
     UFUNCTION(BlueprintCallable, Category=Mode)
     void use_tool(EAvatarTool tool);
