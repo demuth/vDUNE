@@ -2,7 +2,7 @@
 
 
 #include "PickupActor.h"
-#include "Collectible.h"
+#include "PickupModel.h"
 #include "../../DuneAvatar.h"
 #include "../ViableInteraction.h"
 
