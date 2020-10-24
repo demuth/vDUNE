@@ -22,8 +22,8 @@ void APickupActor::BeginPlay()
 	Super::BeginPlay();
 
 	//Generates data about the collectible.
-	collectible_data_ = NewObject<UCollectible>();
-	collectible_data_->Initialize(name_, details_);
+	pickup_data_ = NewObject<UPickupModel>();
+	pickup_data_->Initialize(name_, details_);
 }
 
 // Called every frame
@@ -33,14 +33,14 @@ void APickupActor::Tick(float DeltaTime)
 
 }
 
-UCollectible * APickupActor::on_pickup()
+UPickupModel * APickupActor::on_pickup()
 {
     FString name = GetName();
     UE_LOG(LogClass, Log, TEXT("Collected %s"), *name);
 
     this->Destroy();
 
-    return collectible_data_;
+    return pickup_data_;
 }
 
 bool APickupActor::actor_interaction_viable(const ADuneAvatar * const avatar) const
