@@ -16,14 +16,16 @@ void ADuneHUD::DrawHUD()
 
 }
 
-void ADuneHUD::update_hud_widget()
+UUserWidget * ADuneHUD::update_hud_widget()
 {
+    UUserWidget * widget = nullptr;
+
     UE_LOG(LogClass, Log, TEXT("Updating HUD widget. . ."));
     auto avatar = Cast<ADuneAvatar>(GetOwningPawn());
 
     if (avatar)
     {
-        const auto mode = avatar->GetAvatarMode();
+        const auto mode = avatar->get_avatar_mode();
         auto controller = avatar->GetController<ADuneController>();
 
         TSubclassOf<class UUserWidget> hud_type;
@@ -31,10 +33,9 @@ void ADuneHUD::update_hud_widget()
         if (mode)
         {
             hud_type = mode->get_hud_type();
+
             if(hud_type)
             {
-                UUserWidget * widget = nullptr;
-
                 if (controller)
                     widget = controller->new_widget(*hud_type);
 
@@ -50,6 +51,8 @@ void ADuneHUD::update_hud_widget()
             this->remove_widgets();
         }
     }
+
+    return widget;
 }
 
 void ADuneHUD::remove_widgets()

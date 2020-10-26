@@ -15,6 +15,7 @@
 #include "Interfaces/Observable/ObservableActor.h"
 #include "Interfaces/ViableInteraction.h"
 #include "Tools/AvatarTool.h"
+#include "Menus/PickupDisplayMenu.h"
 
 //////////////////////////////////////////////////////////////////////////
 // ADuneAvatar
@@ -25,8 +26,8 @@ ADuneAvatar::ADuneAvatar()
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
 	// set our turn rates for input
-	BaseTurnRate = 45.f;
-	BaseLookUpRate = 45.f;
+	base_turn_rate_ = 45.f;
+    base_lookup_rate_ = 45.f;
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
@@ -40,15 +41,15 @@ ADuneAvatar::ADuneAvatar()
 	GetCharacterMovement()->AirControl = 0.2f;
 
 	// Create a camera boom (pulls in towards the player if there is a collision)
-	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
-	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->TargetArmLength = 300.0f; // The camera follows at this distance behind the character	
-	CameraBoom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
+	camera_boom_ = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+	camera_boom_->SetupAttachment(RootComponent);
+    camera_boom_->TargetArmLength = 300.0f; // The camera follows at this distance behind the character
+	camera_boom_->bUsePawnControlRotation = true; // Rotate the arm based on the controller
 
 	// Create a follow camera
-	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
-	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
-	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
+	follow_camera_ = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
+	follow_camera_->SetupAttachment(camera_boom_, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
+	follow_camera_->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
 	collection_sphere_ = CreateDefaultSubobject<USphereComponent>(TEXT("CollectionSphere"));
 	collection_sphere_->AttachTo(RootComponent);
@@ -75,20 +76,20 @@ void ADuneAvatar::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
-	PlayerInputComponent->BindAxis("MoveForward", this, &ADuneAvatar::MoveForward);
-	PlayerInputComponent->BindAxis("MoveRight", this, &ADuneAvatar::MoveRight);
+	PlayerInputComponent->BindAxis("MoveForward", this, &ADuneAvatar::move_forward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &ADuneAvatar::move_right);
 
 	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
 	// "turn" handles devices that provide an absolute delta, such as a mouse.
 	// "turnrate" is for devices that we choose to treat as a rate of change, such as an analog joystick
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
-	PlayerInputComponent->BindAxis("TurnRate", this, &ADuneAvatar::TurnAtRate);
+	PlayerInputComponent->BindAxis("TurnRate", this, &ADuneAvatar::turn_at_rate);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
-	PlayerInputComponent->BindAxis("LookUpRate", this, &ADuneAvatar::LookUpAtRate);
+	PlayerInputComponent->BindAxis("LookUpRate", this, &ADuneAvatar::look_up_at_rate);
 
 	// handle touch devices
-	PlayerInputComponent->BindTouch(IE_Pressed, this, &ADuneAvatar::TouchStarted);
-	PlayerInputComponent->BindTouch(IE_Released, this, &ADuneAvatar::TouchStopped);
+	PlayerInputComponent->BindTouch(IE_Pressed, this, &ADuneAvatar::touch_started);
+	PlayerInputComponent->BindTouch(IE_Released, this, &ADuneAvatar::touch_stopped);
 
 	// VR headset functionality
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &ADuneAvatar::OnResetVR);
@@ -101,8 +102,8 @@ void ADuneAvatar::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
 
 void ADuneAvatar::Tick(float delta_seconds)
 {
-    CameraBoom->SetWorldLocation((mode_ != nullptr) ? mode_->calculate_camera_displacement(this->GetFollowCamera()->GetForwardVector(), this->GetActorLocation()) : this->GetActorLocation());
-    CameraBoom->TargetArmLength = (mode_ != nullptr) ? mode_->calculate_camera_arm_length() : 300.0f;
+    camera_boom_->SetWorldLocation((mode_ != nullptr) ? mode_->calculate_camera_displacement(this->get_follow_camera()->GetForwardVector(), this->GetActorLocation()) : this->GetActorLocation());
+    camera_boom_->TargetArmLength = (mode_ != nullptr) ? mode_->calculate_camera_arm_length() : 300.0f;
 
     detect_viable_interactions();
     update_viable_interactions();
@@ -113,29 +114,29 @@ void ADuneAvatar::OnResetVR()
 	UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition();
 }
 
-void ADuneAvatar::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
+void ADuneAvatar::touch_started(ETouchIndex::Type FingerIndex, FVector Location)
 {
 		Jump();
 }
 
-void ADuneAvatar::TouchStopped(ETouchIndex::Type FingerIndex, FVector Location)
+void ADuneAvatar::touch_stopped(ETouchIndex::Type FingerIndex, FVector Location)
 {
 		StopJumping();
 }
 
-void ADuneAvatar::TurnAtRate(float Rate)
+void ADuneAvatar::turn_at_rate(float Rate)
 {
 	// calculate delta for this frame from the rate information
-	AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
+	AddControllerYawInput(Rate * base_turn_rate_ * GetWorld()->GetDeltaSeconds());
 }
 
-void ADuneAvatar::LookUpAtRate(float Rate)
+void ADuneAvatar::look_up_at_rate(float Rate)
 {
 	// calculate delta for this frame from the rate information
-	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
+	AddControllerPitchInput(Rate * base_lookup_rate_ * GetWorld()->GetDeltaSeconds());
 }
 
-void ADuneAvatar::MoveForward(float Value)
+void ADuneAvatar::move_forward(float Value)
 {
 	if ((Controller != NULL) && (Value != 0.0f))
 	{
@@ -149,7 +150,7 @@ void ADuneAvatar::MoveForward(float Value)
 	}
 }
 
-void ADuneAvatar::MoveRight(float Value)
+void ADuneAvatar::move_right(float Value)
 {
 	if ( (Controller != NULL) && (Value != 0.0f) )
 	{
@@ -167,7 +168,7 @@ void ADuneAvatar::MoveRight(float Value)
 void ADuneAvatar::detect_viable_interactions()
 {
     TArray<AActor*> collected_actors;
-    GetCollectionSphere()->GetOverlappingActors(collected_actors);
+    get_collection_sphere()->GetOverlappingActors(collected_actors);
 
     for (int32 i = 0; i < collected_actors.Num(); ++i)
     {
@@ -231,6 +232,43 @@ void ADuneAvatar::try_interaction()
 TArray<UPickupModel*> ADuneAvatar::get_collectibles() const
 {
     return collectibles_;
+}
+
+UUserWidget * ADuneAvatar::display_pickup(TSubclassOf<UAvatarMenu> menu_type)
+{
+    UE_LOG(LogClass, Log, TEXT("display pickup called"));
+
+    auto controller = this->GetController<ADuneController>();
+
+    //tear down any existing mode.
+    if (mode_ != nullptr)
+        mode_->teardown();
+
+    if (!menu_type)
+    {
+        UE_LOG(LogClass, Error, TEXT("Tool class was not found. "));
+        mode_ = nullptr;
+    }
+    else
+    {
+        //assign a new mode instance and set it up.
+        if (controller != nullptr)
+        {
+            auto menu = NewObject<UAvatarMenu>(this, menu_type);
+            mode_ = menu;
+            return controller->update_hud();
+
+            //mode_ was reassigned therefore check that it is still valid.
+            if (mode_ != nullptr)
+            {
+                mode_->setup( this, &GetWorldTimerManager() );
+            }
+        }
+
+
+    }
+
+    return nullptr;
 }
 
 TMap<FString, class UViableInteraction *> ADuneAvatar::get_viable_interactions() const

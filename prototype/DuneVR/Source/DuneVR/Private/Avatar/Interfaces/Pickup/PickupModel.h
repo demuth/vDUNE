@@ -25,6 +25,9 @@ public:
     UFUNCTION(BlueprintCallable, Category=Inventory)
     FString get_details() const;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Widgets)
+    class UUserWidget * owner_;
+
 protected:
 	UPROPERTY(BlueprintReadonly, Category=Inventory)
 	FString collectible_name_;

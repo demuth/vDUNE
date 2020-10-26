@@ -39,7 +39,7 @@ void UInspectTool::update()
     auto avatar_mesh = avatar->GetMesh();
 
     auto up = FVector(0, 0, 1);
-    auto forward = avatar->GetFollowCamera()->GetForwardVector();
+    auto forward = avatar->get_follow_camera()->GetForwardVector();
     FVector start = avatar->GetActorLocation();
     FVector end = ((forward * 1000.0f)) + start;
 

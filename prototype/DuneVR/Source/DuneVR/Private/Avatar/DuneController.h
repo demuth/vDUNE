@@ -19,7 +19,7 @@ public:
 
     virtual void BeginPlay() override;
 
-    void update_hud();
+    UUserWidget * update_hud();
 
     UUserWidget * new_widget(TSubclassOf<class UUserWidget> type);
 

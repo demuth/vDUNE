@@ -18,11 +18,11 @@ class ADuneAvatar : public ACharacter
 
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class USpringArmComponent* CameraBoom;
+	class USpringArmComponent* camera_boom_;
 
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class UCameraComponent* FollowCamera;
+	class UCameraComponent* follow_camera_;
 
     /** Collection Sphere */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Pickup, meta = (AllowPrivateAccess = "true"))
@@ -51,11 +51,11 @@ public:
 
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
-	float BaseTurnRate;
+	float base_turn_rate_;
 
 	/** Base look up/down rate, in deg/sec. Other scaling may affect final rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
-	float BaseLookUpRate;
+	float base_lookup_rate_;
 
 protected:
     virtual void Tick(float delta_seconds) override;
@@ -64,28 +64,28 @@ protected:
 	void OnResetVR();
 
 	/** Called for forwards/backward input */
-	void MoveForward(float Value);
+	void move_forward(float Value);
 
 	/** Called for side to side input */
-	void MoveRight(float Value);
+	void move_right(float Value);
 
 	/** 
 	 * Called via input to turn at a given rate. 
 	 * @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
 	 */
-	void TurnAtRate(float Rate);
+	void turn_at_rate(float Rate);
 
 	/**
 	 * Called via input to turn look up/down at a given rate. 
 	 * @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
 	 */
-	void LookUpAtRate(float Rate);
+	void look_up_at_rate(float Rate);
 
 	/** Handler for when a touch input begins. */
-	void TouchStarted(ETouchIndex::Type FingerIndex, FVector Location);
+	void touch_started(ETouchIndex::Type FingerIndex, FVector Location);
 
 	/** Handler for when a touch input stops. */
-	void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
+	void touch_stopped(ETouchIndex::Type FingerIndex, FVector Location);
 
 protected:
 	// APawn interface
@@ -101,6 +101,9 @@ protected:
 	UFUNCTION(BlueprintCallable, Category=Inventory)
 	TArray<class UPickupModel*> get_collectibles() const;
 
+    UFUNCTION(BlueprintCallable, Category=Inventory)
+    class UUserWidget *  display_pickup(TSubclassOf<class UAvatarMenu> menu_type);
+
     UFUNCTION(BlueprintCallable, Category=Interfaces)
     TMap<FString, class UViableInteraction *> get_viable_interactions() const;
 
@@ -110,11 +113,10 @@ protected:
 
 
 public:
-	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
-	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
-    FORCEINLINE class USphereComponent* GetCollectionSphere() const { return collection_sphere_; }
-    FORCEINLINE const class UAvatarMode* GetAvatarMode() const { return mode_; }
-
+	FORCEINLINE class USpringArmComponent* get_camera_boom() const { return camera_boom_; }
+	FORCEINLINE class UCameraComponent* get_follow_camera() const { return follow_camera_; }
+    FORCEINLINE class USphereComponent* get_collection_sphere() const { return collection_sphere_; }
+    FORCEINLINE const class UAvatarMode* get_avatar_mode() const { return mode_; }
 
     bool add_collectible(class UPickupModel * collectible_data);
 

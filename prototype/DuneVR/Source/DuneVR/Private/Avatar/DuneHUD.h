@@ -15,7 +15,7 @@ class ADuneHUD : public AHUD
 	GENERATED_BODY()
 
 public:
-    void update_hud_widget();
+    UUserWidget * update_hud_widget();
 
 protected:
 	virtual void BeginPlay() override;

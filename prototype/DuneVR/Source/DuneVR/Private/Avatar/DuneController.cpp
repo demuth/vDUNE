@@ -68,17 +68,18 @@ void ADuneController::close_menu()
     }
 }
 
-void ADuneController::update_hud()
+UUserWidget * ADuneController::update_hud()
 {
     auto hud = GetHUD<ADuneHUD>();
 
     if (hud != nullptr)
     {
-        hud->update_hud_widget();
+        return hud->update_hud_widget();
     }
     else
     {
         UE_LOG(LogClass, Warning, TEXT("Controller could not update the hud. "));
+        return nullptr;
     }
 }
 
