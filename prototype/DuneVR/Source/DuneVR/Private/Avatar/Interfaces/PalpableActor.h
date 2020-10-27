@@ -23,7 +23,7 @@ protected:
 	virtual void BeginPlay() override;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Pickup)
-    float interaction_radius_;
+    float interaction_radius_;// in centimeters.
 
 public:	
 	// Called every frame

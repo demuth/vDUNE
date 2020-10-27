@@ -106,6 +106,7 @@ void ADuneAvatar::Tick(float delta_seconds)
     camera_boom_->TargetArmLength = (mode_ != nullptr) ? mode_->calculate_camera_arm_length() : 300.0f;
 
     detect_viable_interactions();
+
     update_viable_interactions();
 }
 

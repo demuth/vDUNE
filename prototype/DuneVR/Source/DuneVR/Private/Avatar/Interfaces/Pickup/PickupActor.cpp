@@ -5,12 +5,17 @@
 #include "PickupModel.h"
 #include "../../DuneAvatar.h"
 #include "../ViableInteraction.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 APickupActor::APickupActor()
 : APalpableActor()
 {
 	PrimaryActorTick.bCanEverTick = false;
+
+    UCapsuleComponent* interaction_bounds = CreateDefaultSubobject<UCapsuleComponent>( TEXT("EventBounds") );
+    interaction_bounds->InitCapsuleSize(interaction_radius_, 100.0f);
+    RootComponent = interaction_bounds;
 
 	mesh_ = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("pickup_mesh"));
     RootComponent = mesh_;
@@ -54,7 +59,7 @@ bool APickupActor::actor_interaction_viable(const ADuneAvatar * const avatar) co
     FVector displacement3D = point2 - point1;
     FVector2D displacement = FVector2D(displacement3D.X, displacement3D.Y);
 
-    return (displacement.Size() < interaction_radius_);
+    return (displacement.Size() < interaction_radius_);// recorded in centimeters.
 }
 
 void APickupActor::interact(ADuneAvatar * const avatar, UViableInteraction * interaction, bool &is_active)

@@ -9,6 +9,7 @@
 #include "Components/ArrowComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "DrawDebugHelpers.h"
+#include "../../Interfaces/Inspectable/Subject.h"
 
 
 UInspectTool::UInspectTool()
@@ -51,6 +52,11 @@ void UInspectTool::update()
         {
             DrawDebugLine(GetWorld(), (avatar_mesh != nullptr)?avatar_mesh->GetSocketLocation(socket_name_):start + FVector(0,300,0), result.ImpactPoint, FColor::Cyan, false, 0.5f, 0, 1);
             DrawDebugSphere(GetWorld(), result.ImpactPoint, 20, 12, FColor(181,0,0), false, 1.0f, 0, 2);
+
+            auto subject = Cast<ASubject>(result.Actor);
+
+            if (subject)
+                UE_LOG(LogClass, Log, TEXT("You pointed at %s"), *subject->get_name());
         }
     }
 }

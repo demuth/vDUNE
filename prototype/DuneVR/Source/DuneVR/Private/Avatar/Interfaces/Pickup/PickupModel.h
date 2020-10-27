@@ -25,6 +25,9 @@ public:
     UFUNCTION(BlueprintCallable, Category=Inventory)
     FString get_details() const;
 
+    /**
+     * A pointer to the list widget.
+     */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Widgets)
     class UUserWidget * owner_;
 
