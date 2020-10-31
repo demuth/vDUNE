@@ -4,9 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "Tools/AvatarTool.h"
-#include "Tools/EAvatarTool.h"
-#include "Modes/EAvatarMode.h"
+#include "Interfaces/Tools/AvatarTool.h"
+#include "Interfaces/Tools/EAvatarTool.h"
+#include "Interfaces/Modes/EAvatarMode.h"
 #include "DuneAvatar.generated.h"
 
 
@@ -100,6 +100,9 @@ protected:
 
 	UFUNCTION(BlueprintCallable, Category=Inventory)
 	TArray<class UPickupModel*> get_collectibles() const;
+
+    UFUNCTION(BlueprintCallable, Category=ModeLogic)
+    class UAvatarMode * get_mode() const;
 
     UFUNCTION(BlueprintCallable, Category=Inventory)
     class UUserWidget *  display_pickup(TSubclassOf<class UAvatarMenu> menu_type);

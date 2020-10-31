@@ -27,7 +27,7 @@ void ASubject::Tick(float DeltaTime)
 
 }
 
-FString ASubject::get_name()
+FString ASubject::get_name() const
 {
     return name_;
 }

@@ -10,12 +10,12 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Interfaces/Pickup/PickupActor.h"
-#include "Interfaces/Pickup/PickupModel.h"
-#include "Interfaces/Observable/ObservableActor.h"
-#include "Interfaces/ViableInteraction.h"
-#include "Tools/AvatarTool.h"
-#include "Menus/PickupDisplayMenu.h"
+#include "Avatar/Interfaces/Pickup/PickupActor.h"
+#include "Avatar/Interfaces/Pickup/PickupModel.h"
+#include "Avatar/Interfaces/Observable/ObservableActor.h"
+#include "Avatar/Interfaces/ViableInteraction.h"
+#include "Avatar/Interfaces/Tools/AvatarTool.h"
+#include "Avatar/Interfaces/Menus/PickupDisplayMenu.h"
 
 //////////////////////////////////////////////////////////////////////////
 // ADuneAvatar
@@ -233,6 +233,11 @@ void ADuneAvatar::try_interaction()
 TArray<UPickupModel*> ADuneAvatar::get_collectibles() const
 {
     return collectibles_;
+}
+
+UAvatarMode * ADuneAvatar::get_mode() const
+{
+    return mode_;
 }
 
 UUserWidget * ADuneAvatar::display_pickup(TSubclassOf<UAvatarMenu> menu_type)
