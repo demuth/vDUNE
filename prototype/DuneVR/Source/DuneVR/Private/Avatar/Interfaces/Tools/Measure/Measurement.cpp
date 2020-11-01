@@ -2,6 +2,7 @@
 
 
 #include "Measurement.h"
+#include "MeasureMarker.h"
 
 // Sets default values
 AMeasurement::AMeasurement()
@@ -27,8 +28,12 @@ void AMeasurement::Tick(float DeltaTime)
 
     FVector distance = point_2 - point_1;
 
-    UE_LOG(LogTemp, Log, TEXT("Measurement: %f"), distance.Size());
     measurement_ = distance.Size();
+}
 
+void AMeasurement::set_points(AMeasureMarker *marker1, AMeasureMarker *marker2)
+{
+    point_1_ = marker1;
+    point_2_ = marker2;
 }
 

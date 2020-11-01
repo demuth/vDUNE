@@ -101,9 +101,6 @@ protected:
 	UFUNCTION(BlueprintCallable, Category=Inventory)
 	TArray<class UPickupModel*> get_collectibles() const;
 
-    UFUNCTION(BlueprintCallable, Category=ModeLogic)
-    class UAvatarMode * get_mode() const;
-
     UFUNCTION(BlueprintCallable, Category=Inventory)
     class UUserWidget *  display_pickup(TSubclassOf<class UAvatarMenu> menu_type);
 
@@ -113,13 +110,13 @@ protected:
     UFUNCTION(BlueprintCallable, Category=Mode)
     void use_tool(EAvatarTool tool);
 
-
-
 public:
 	FORCEINLINE class USpringArmComponent* get_camera_boom() const { return camera_boom_; }
 	FORCEINLINE class UCameraComponent* get_follow_camera() const { return follow_camera_; }
     FORCEINLINE class USphereComponent* get_collection_sphere() const { return collection_sphere_; }
-    FORCEINLINE const class UAvatarMode* get_avatar_mode() const { return mode_; }
+
+    UFUNCTION(BlueprintCallable, Category=ModeLogic)
+    class UAvatarMode* get_avatar_mode() const;
 
     bool add_collectible(class UPickupModel * collectible_data);
 
@@ -127,7 +124,6 @@ public:
 
     void set_inspect_mode();
     void set_measure_mode();
-    void place_measure_marker();
 
     UFUNCTION(BlueprintCallable, Category=Mode)
     void set_mode(EAvatarMode mode);

@@ -15,6 +15,7 @@
 #include "Avatar/Interfaces/Observable/ObservableActor.h"
 #include "Avatar/Interfaces/ViableInteraction.h"
 #include "Avatar/Interfaces/Tools/AvatarTool.h"
+#include "Avatar/Interfaces/Tools/MeasureTool.h"
 #include "Avatar/Interfaces/Menus/PickupDisplayMenu.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -94,10 +95,34 @@ void ADuneAvatar::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
 	// VR headset functionality
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &ADuneAvatar::OnResetVR);
 
-    PlayerInputComponent->BindAction("MeasureMode", IE_Released, this, &ADuneAvatar::set_measure_mode);
-    PlayerInputComponent->BindAction("MeasurePlace", IE_Released, this, &ADuneAvatar::place_measure_marker);
+    FInputActionBinding MeasureModeBinding( "MeasureMode", IE_Released );
+    MeasureModeBinding.ActionDelegate.GetDelegateForManualSet().BindLambda( [this]()
+    {
+        this->set_measure_mode();
+    });
+    PlayerInputComponent->AddActionBinding(MeasureModeBinding);
 
-    PlayerInputComponent->BindAction("InspectMode", IE_Released, this, &ADuneAvatar::set_inspect_mode);
+    FInputActionBinding PlaceMarkerBinding( "MeasurePlace", IE_Released );
+    PlaceMarkerBinding.ActionDelegate.GetDelegateForManualSet().BindLambda( [this]()
+    {
+        //if the mode is the measure tool.
+        UMeasureTool * measure_tool = Cast<UMeasureTool>(mode_);
+
+        if (measure_tool)
+            measure_tool->add_marker();
+
+        else
+            UE_LOG(LogClass, Warning, TEXT("The measure tool is either not active or it has been destroyed."));
+    });
+    PlayerInputComponent->AddActionBinding(PlaceMarkerBinding);
+
+    FInputActionBinding InspectModeBinding( "InspectMode", IE_Released );
+    InspectModeBinding.ActionDelegate.GetDelegateForManualSet().BindLambda( [this]()
+    {
+        this->set_inspect_mode();
+    });
+
+    PlayerInputComponent->AddActionBinding(InspectModeBinding);
 }
 
 void ADuneAvatar::Tick(float delta_seconds)
@@ -235,11 +260,6 @@ TArray<UPickupModel*> ADuneAvatar::get_collectibles() const
     return collectibles_;
 }
 
-UAvatarMode * ADuneAvatar::get_mode() const
-{
-    return mode_;
-}
-
 UUserWidget * ADuneAvatar::display_pickup(TSubclassOf<UAvatarMenu> menu_type)
 {
     UE_LOG(LogClass, Log, TEXT("display pickup called"));
@@ -281,7 +301,6 @@ TMap<FString, class UViableInteraction *> ADuneAvatar::get_viable_interactions()
 {
     return viable_interactions_;
 }
-
 
 bool ADuneAvatar::add_collectible(UPickupModel * collectible_data)
 {
@@ -335,7 +354,10 @@ void ADuneAvatar::use_tool(EAvatarTool tool)
 
     //tear down any existing mode.
     if (mode_)
+    {
         mode_->teardown();
+    }
+
 
     if (!type || type->Get() == nullptr)
     {
@@ -351,7 +373,9 @@ void ADuneAvatar::use_tool(EAvatarTool tool)
             controller->update_hud();
 
             if (mode_)
+            {
                 mode_->setup( this, &GetWorldTimerManager() );
+            }
         }
     }
 }
@@ -363,7 +387,10 @@ void ADuneAvatar::set_mode(EAvatarMode mode)
 
     //tear down any existing mode.
     if (mode_ != nullptr)
+    {
         mode_->teardown();
+    }
+
 
     if (!type || type->Get() == nullptr)
     {
@@ -380,12 +407,14 @@ void ADuneAvatar::set_mode(EAvatarMode mode)
 
             //mode_ was reassigned therefore check that it is still valid.
             if (mode_ != nullptr)
+            {
                 mode_->setup( this, &GetWorldTimerManager() );
+            }
         }
     }
 }
 
-void ADuneAvatar::place_measure_marker()
+UAvatarMode* ADuneAvatar::get_avatar_mode() const
 {
-
+    return mode_;
 }

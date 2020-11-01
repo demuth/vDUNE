@@ -32,4 +32,5 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void set_points(class AMeasureMarker * marker1, class AMeasureMarker * marker2);
 };
