@@ -28,9 +28,12 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Measurement")
+	class UParticleSystemComponent * particle_system_;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void set_points(class AMeasureMarker * marker1, class AMeasureMarker * marker2);
+	void set_points(class AMeasureMarker * marker1, class AMeasureMarker * marker2, UParticleSystem * particle_system);
 };

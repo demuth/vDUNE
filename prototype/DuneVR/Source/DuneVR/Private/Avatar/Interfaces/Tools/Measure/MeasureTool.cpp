@@ -4,10 +4,11 @@
 #include "../MeasureTool.h"
 #include "../../../DuneAvatar.h"
 #include "GameFramework/Pawn.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "Engine/StaticMeshActor.h"
 #include "Camera/CameraComponent.h"
 #include "Components/ArrowComponent.h"
-#include "GameFramework/SpringArmComponent.h"
+#include "Particles/ParticleSystem.h"
 #include "DrawDebugHelpers.h"
 #include "MeasureMarker.h"
 #include "Measurement.h"
@@ -37,7 +38,7 @@ void UMeasureTool::update()
 
     ADuneAvatar * avatar = Cast<ADuneAvatar>(pawn_);
 
-    if (!avatar)
+    if (!avatar || marker_.Num() >= 2)
         return;
 
     auto up = FVector(0, 0, 1);
@@ -53,7 +54,7 @@ void UMeasureTool::update()
         {
             FVector impact = result.ImpactPoint;
             DrawDebugLine(GetWorld(), start + FVector(0,0,100), result.ImpactPoint, FColor::Cyan, false, 0.5f, 0, 1);
-            DrawDebugSphere(GetWorld(), impact, 50, 12, FColor(181,0,0), false, 1.0f, 0, 2);
+            DrawDebugSphere(GetWorld(), impact, 20, 12, FColor(181,0,0), false, 1.0f, 0, 2);
 
             location_ = new FVector(impact);
         }
@@ -96,7 +97,7 @@ void UMeasureTool::add_marker()
         {
             auto measurement = GetWorld()->SpawnActor<AMeasurement>();
 
-            measurement->set_points(marker_[0], marker_[1]);
+            measurement->set_points(marker_[0], marker_[1], particle_system_);
 
             measurement_.Add(measurement);
         }

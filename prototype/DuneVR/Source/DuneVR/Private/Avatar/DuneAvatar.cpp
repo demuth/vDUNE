@@ -264,11 +264,14 @@ UUserWidget * ADuneAvatar::display_pickup(TSubclassOf<UAvatarMenu> menu_type)
 {
     UE_LOG(LogClass, Log, TEXT("display pickup called"));
 
+    UUserWidget * widget = nullptr;
     auto controller = this->GetController<ADuneController>();
 
     //tear down any existing mode.
     if (mode_ != nullptr)
+    {
         mode_->teardown();
+    }
 
     if (!menu_type)
     {
@@ -277,21 +280,32 @@ UUserWidget * ADuneAvatar::display_pickup(TSubclassOf<UAvatarMenu> menu_type)
     }
     else
     {
+        UE_LOG(LogClass, Log, TEXT("Tool class was found. "));
+
         //assign a new mode instance and set it up.
         if (controller != nullptr)
         {
             auto menu = NewObject<UAvatarMenu>(this, menu_type);
             mode_ = menu;
-            return controller->update_hud();
+            widget = controller->update_hud();
 
             //mode_ was reassigned therefore check that it is still valid.
             if (mode_ != nullptr)
             {
+                UE_LOG(LogClass, Log, TEXT("Setup new mode."));
                 mode_->setup( this, &GetWorldTimerManager() );
             }
+            else
+            {
+                UE_LOG(LogClass, Error, TEXT("Mode reference was not valid. "));
+            }
+        }
+        else
+        {
+            UE_LOG(LogClass, Error, TEXT("Controller reference was not valid. "));
         }
 
-
+        return widget;
     }
 
     return nullptr;

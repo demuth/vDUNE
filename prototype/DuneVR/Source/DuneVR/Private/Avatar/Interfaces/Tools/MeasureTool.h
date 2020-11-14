@@ -31,6 +31,9 @@ protected:
     UFUNCTION(BlueprintCallable, Category=Data)
     FORCEINLINE TArray<class AMeasurement *> get_measurements() const { return measurement_; }
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Widgets)
+    class UParticleSystem * particle_system_;
+
 private:
     TArray<class AMeasureMarker *> marker_;
     TArray<class AMeasurement *> measurement_;
