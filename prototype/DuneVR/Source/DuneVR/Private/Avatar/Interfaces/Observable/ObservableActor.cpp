@@ -23,6 +23,7 @@ void AObservableActor::BeginPlay()
 	Super::BeginPlay();
 
 	viewer_ = GetWorld()->SpawnActor<AObjectViewer>(this->GetActorLocation(), FRotator(0, 0, 180));
+    viewer_->set_distance(viewer_start_distance_);
 
     viewer_->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
 }
@@ -32,6 +33,8 @@ void AObservableActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (viewer_)
+        viewer_->update_spring_arm_location(GetActorLocation(), GetActorRotation() + viewer_rotation_);
 }
 
 bool AObservableActor::actor_interaction_viable(const ADuneAvatar * const avatar) const
@@ -59,6 +62,9 @@ void AObservableActor::interact(ADuneAvatar * const avatar, UViableInteraction *
     {
         if (avatar->Controller)
         {
+            if (viewer_)
+                viewer_->bind_delegate(this, &AObservableActor::fun);
+
             UE_LOG(LogClass, Log, TEXT("%s is possessing %s"), *avatar->GetName(), *this->GetName());
             avatar->Controller->Possess( viewer_ );
             is_active = true;
@@ -73,4 +79,9 @@ void AObservableActor::interact(ADuneAvatar * const avatar, UViableInteraction *
             is_active = false;
         }
     }
+}
+
+void AObservableActor::fun()
+{
+    UE_LOG(LogClass, Log, TEXT("FUN()"));
 }

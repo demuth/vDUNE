@@ -18,6 +18,12 @@ class AObservableActor : public APalpableActor
     UPROPERTY(VisibleAnywhere, BlueprintReadonly, Category=Mesh, meta = (AllowPrivateAccess = "true"))
     class UStaticMeshComponent* mesh_;
 
+    UPROPERTY(EditAnywhere, BlueprintReadonly, Category=Mesh, meta = (AllowPrivateAccess = "true"))
+    FRotator viewer_rotation_;
+
+    UPROPERTY(EditAnywhere, BlueprintReadonly, Category=Mesh, meta = (AllowPrivateAccess = "true"))
+    float viewer_start_distance_ = 80.0f;
+
 public:	
 	// Sets default values for this actor's properties
 	AObservableActor();
@@ -33,4 +39,6 @@ public:
     virtual bool actor_interaction_viable(const ADuneAvatar * const avatar) const override;
 
     virtual void interact(class ADuneAvatar * const avatar, class UViableInteraction * interaction, bool &is_active) override;
+
+    void fun();
 };

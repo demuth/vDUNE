@@ -4,7 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "Delegates/DelegateInstanceInterface.h"
 #include "ObjectViewer.generated.h"
+
+
+DECLARE_DELEGATE(EndSessionDelegate)
 
 UCLASS()
 class AObjectViewer : public APawn
@@ -27,6 +31,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+    EndSessionDelegate delegate_;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -34,5 +40,10 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	void update_spring_arm_location(FVector location, FRotator rotator);
+	void set_distance(float distance);
+
     void try_end_viewer_session();
+
+    void bind_delegate(class AObservableActor * actor, void (AObservableActor::*fptr)());
 };

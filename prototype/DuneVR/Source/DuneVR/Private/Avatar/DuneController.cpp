@@ -42,14 +42,12 @@ void ADuneController::toggle_collectibles_display()
 void ADuneController::on_interaction_command()
 {
     auto avatar = Cast<ADuneAvatar>(GetPawn());
+    auto viewer = Cast<AObjectViewer>(GetPawn());
 
     if (avatar)
         avatar->try_interaction();
 
-
-    auto viewer = Cast<AObjectViewer>(GetPawn());
-
-    if (viewer)
+    else if (viewer)
         viewer->try_end_viewer_session();
 }
 

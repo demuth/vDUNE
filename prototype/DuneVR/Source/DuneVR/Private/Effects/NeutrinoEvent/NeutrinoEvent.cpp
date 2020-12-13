@@ -5,7 +5,10 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/BoxComponent.h"
+#include "JsonObjectConverter.h"
 #include <cmath>
+
+#include "NeutrinoEventStruct.h"
 
 // Sets default values
 ANeutrinoEvent::ANeutrinoEvent()
@@ -45,7 +48,33 @@ ANeutrinoEvent::ANeutrinoEvent()
 void ANeutrinoEvent::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+    FString FilePath = "/Users/lucassorenson/Code/dune/vDune/prototype/DuneVR/Content/information.json";
+    FString FileData = "";
+    if (!FPlatformFileManager::Get().GetPlatformFile().FileExists(*FilePath))
+    {
+        UE_LOG(LogTemp, Warning, TEXT("DID NOT FIND FILE"));
+        return;
+    }
+
+    FNeutrinoEventList events;
+    FFileHelper::LoadFileToString(FileData, *FilePath);
+
+    UE_LOG(LogTemp, Warning, TEXT("%s"), *FileData);
+
+    if (FJsonObjectConverter::JsonObjectStringToUStruct(FileData, &events, 0, 0))
+    {
+        UE_LOG(LogClass, Warning, TEXT("CONVERTED"));
+        for (auto &event : events.EventList)
+        {
+            UE_LOG(LogClass, Warning, TEXT("Event: %i Number of Tracks: %i"), event.Id, event.Tracks.Num());
+        }
+
+    }
+    else
+    {
+        UE_LOG(LogClass, Error, TEXT("Failed to convert!"));
+    }
 }
 
 // Called every frame

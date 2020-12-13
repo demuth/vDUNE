@@ -2,6 +2,7 @@
 
 
 #include "ObjectViewer.h"
+#include "ObservableActor.h"
 #include "../../DuneAvatar.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -15,8 +16,8 @@ AObjectViewer::AObjectViewer()
     // Create a camera boom (pulls in towards the player if there is a collision)
     camera_boom_ = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
     camera_boom_->SetupAttachment(RootComponent);
-    camera_boom_->TargetArmLength = 80.0f; // The camera follows at this distance behind the character
-    camera_boom_->bUsePawnControlRotation = true; // Rotate the arm based on the controller
+    camera_boom_->TargetArmLength = 80.0f;
+    camera_boom_->bUsePawnControlRotation = true;
     camera_boom_->ProbeChannel = ECollisionChannel::ECC_EngineTraceChannel1;
 
     // Create a viewer camera
@@ -47,4 +48,24 @@ void AObjectViewer::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 void AObjectViewer::try_end_viewer_session()
 {
     UE_LOG(LogClass, Log, TEXT("%s is trying to initiate an interaction. "), *this->GetName());
+    delegate_.ExecuteIfBound();
+}
+
+void AObjectViewer::update_spring_arm_location(FVector location, FRotator rotator)
+{
+    if (camera_boom_)
+    {
+        camera_boom_->SetWorldLocation(location);
+        camera_boom_->SetWorldRotation(rotator);
+    }
+}
+
+void AObjectViewer::set_distance(float distance)
+{
+    camera_boom_->TargetArmLength = distance;
+}
+
+void AObjectViewer::bind_delegate(AObservableActor * actor, void (AObservableActor::*fptr)())
+{
+    delegate_.BindUObject(actor, fptr);
 }

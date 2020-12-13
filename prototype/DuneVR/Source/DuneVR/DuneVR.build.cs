@@ -13,7 +13,7 @@ public class DuneVR : ModuleRules
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
 		// Uncomment if you are using Slate UI
-		PrivateDependencyModuleNames.AddRange(new string[] { "UMG", "Slate", "SlateCore" });
+		PrivateDependencyModuleNames.AddRange(new string[] { "UMG", "Slate", "SlateCore", "Json", "JsonUtilities" });
 		
 		// Uncomment if you are using online features
 		// PrivateDependencyModuleNames.Add("OnlineSubsystem");

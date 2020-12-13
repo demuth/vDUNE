@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "4.24",
+	"EngineAssociation": "4.26",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -15,13 +15,6 @@
 		}
 	],
 	"Plugins": [
-		{
-			"Name": "DatasmithCADImporter",
-			"Enabled": true,
-			"SupportedTargetPlatforms": [
-				"Win64"
-			]
-		},
 		{
 			"Name": "WebBrowserWidget",
 			"Enabled": true
