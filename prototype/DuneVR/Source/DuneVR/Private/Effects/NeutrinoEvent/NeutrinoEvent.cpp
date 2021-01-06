@@ -24,23 +24,40 @@ ANeutrinoEvent::ANeutrinoEvent()
     event_bounds->InitBoxExtent(FVector(100, 100, 100));
     event_bounds->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
-    auto extent = event_bounds->GetScaledBoxExtent();
-    auto relative_origin = extent * -1;
-    int num_increments = (int)round(extent.Size());
 
-    for (int i=0; i < num_increments; ++i)
+    FString FilePath = "/Users/lucassorenson/Code/dune/Subversion/trunk/prototype/DuneVR/Content/information.json";
+    FString FileData = "";
+    if (!FPlatformFileManager::Get().GetPlatformFile().FileExists(*FilePath))
     {
-        float radius = 1 + FMath::Sin(((float)1 / (float)(num_increments / M_PI)) * i) * 7;
-        float sin_position_offset = FMath::Sin(((float)1 / (float)(num_increments / (M_PI * 2))) * i) * 15;
-        FVector xz_offset_vector = FVector(sin_position_offset, sin_position_offset, -1 * sin_position_offset);
-        auto incremental_displacement = (extent * 2) / num_increments;
-        FVector sphere_relative_location = (i * incremental_displacement) + relative_origin;
+        UE_LOG(LogTemp, Warning, TEXT("DID NOT FIND FILE"));
+        return;
+    }
 
-        USphereComponent* sphere = CreateDefaultSubobject<USphereComponent>( *FString::Printf( TEXT("sphere-%i"), i ) );
-        sphere->SetRelativeLocation(sphere_relative_location + xz_offset_vector);
-        sphere->InitSphereRadius( radius );
-        component_list_.Add(sphere);
-        sphere->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+    FNeutrinoEventList events;
+    FFileHelper::LoadFileToString(FileData, *FilePath);
+
+    UE_LOG(LogTemp, Warning, TEXT("%s"), *FileData);
+
+    if (FJsonObjectConverter::JsonObjectStringToUStruct(FileData, &events, 0, 0))
+    {
+        UE_LOG(LogClass, Warning, TEXT("CONVERTED"));
+        int i = 0;
+        for(auto &track : events.EventList[4].Tracks)
+        {
+            for(auto &point : track.Points) {
+                USphereComponent *sphere = CreateDefaultSubobject<USphereComponent>(
+                        *FString::Printf(TEXT("sphere-%i"), i));
+                sphere->SetRelativeLocation(FVector(point.X, point.Y, point.Z));
+                sphere->InitSphereRadius(point.Charge * 0.001);
+                component_list_.Add(sphere);
+                sphere->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+                i++;
+            }
+        }
+    }
+    else
+    {
+        UE_LOG(LogClass, Error, TEXT("Failed to convert!"));
     }
 }
 
@@ -49,7 +66,7 @@ void ANeutrinoEvent::BeginPlay()
 {
 	Super::BeginPlay();
 
-    FString FilePath = "/Users/lucassorenson/Code/dune/vDune/prototype/DuneVR/Content/information.json";
+    FString FilePath = "/Users/lucassorenson/Code/dune/Subversion/trunk/prototype/DuneVR/Content/information.json";
     FString FileData = "";
     if (!FPlatformFileManager::Get().GetPlatformFile().FileExists(*FilePath))
     {
