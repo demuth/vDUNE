@@ -2,6 +2,7 @@
 #include "NeutrinoEvent.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Components/SphereComponent.h"
+#include "Components/StaticMeshComponent.h"
 #include "Components/BoxComponent.h"
 #include "JsonObjectConverter.h"
 #include <cmath>
@@ -10,21 +11,14 @@
 
 ANeutrinoTrack::ANeutrinoTrack()
 {
-    PrimaryActorTick.bCanEverTick = true;
-
-    sphere_ = CreateDefaultSubobject<USphereComponent>( TEXT("RootComponent") );
-    RootComponent = sphere_;
-    sphere_->InitSphereRadius( 40.0f );
+    USphereComponent* SphereComponent = CreateDefaultSubobject<USphereComponent>( TEXT("RootComponent") );
+    RootComponent = SphereComponent;
+    SphereComponent->InitSphereRadius( 40.0f );
 }
 
 void ANeutrinoTrack::BeginPlay()
 {
     Super::BeginPlay();
-}
-
-void ANeutrinoTrack::Tick(float DeltaTime)
-{
-    Super::Tick(DeltaTime);
 }
 
 void ANeutrinoTrack::add_bounds(FVector location, FVector size)

@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "NeutrinoTrack.h"
 #include "NeutrinoEvent.generated.h"
 
 UCLASS()
@@ -13,13 +14,14 @@ public:
 	// Sets default values for this actor's properties
 	ANeutrinoEvent();
 
-    TArray<class USphereComponent*> component_list_;
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Mesh)
+    TSubclassOf<ANeutrinoTrack> track_bp_;
+
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

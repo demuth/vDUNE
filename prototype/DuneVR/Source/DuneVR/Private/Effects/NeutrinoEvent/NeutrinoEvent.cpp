@@ -57,9 +57,9 @@ ANeutrinoEvent::ANeutrinoEvent()
             auto track_z_center = track.Metadata.ZAxisMinimum + track_z_range/2;
 
             auto new_track = NewObject<ANeutrinoTrack>(this, ANeutrinoTrack::StaticClass(), *FString::Printf(TEXT("track-%i"), i));
-            new_track->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-            new_track->add_bounds(FVector(track_x_center, track_y_center, track_z_center), FVector(track_x_range, track_y_center, track_z_center));
+//            new_track->add_bounds(FVector(track_x_center, track_y_center, track_z_center), FVector(track_x_range, track_y_center, track_z_center));
             new_track->add_points(track.Points);
+            new_track->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
             track_list_.Add(new_track);
             i++;
         }

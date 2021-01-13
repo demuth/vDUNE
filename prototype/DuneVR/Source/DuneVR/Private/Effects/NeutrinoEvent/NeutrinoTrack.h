@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Engine/StaticMesh.h"
 #include "NeutrinoEventStruct.h"
 #include "NeutrinoTrack.generated.h"
 
@@ -13,18 +14,17 @@ class ANeutrinoTrack : public AActor
 public:
     // Sets default values for this actor's properties
     ANeutrinoTrack();
+    void add_bounds(FVector location, FVector size);
+    void add_points(TArray<FNeutrinoPointData> points);
 
 protected:
     // Called when the game starts or when spawned
     virtual void BeginPlay() override;
 
-public:
-    // Called every frame
-    virtual void Tick(float DeltaTime) override;
-    void add_bounds(FVector location, FVector size);
-    void add_points(TArray<FNeutrinoPointData> points);
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Mesh)
+    UStaticMesh* point_mesh_;
 
 private:
     TArray<class USphereComponent*> component_list_;
-    USphereComponent* sphere_;
+    TArray<class UStaticMeshComponent*> mesh_;
 };
