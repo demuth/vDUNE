@@ -12,7 +12,16 @@
 				"Engine",
 				"CoreUObject"
 			]
-		}
+		},
+		{
+            "Name": "HighEnergyPhysicsEngine",
+            "Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine",
+				"CoreUObject"
+			]
+        }
 	],
 	"Plugins": [
 		{

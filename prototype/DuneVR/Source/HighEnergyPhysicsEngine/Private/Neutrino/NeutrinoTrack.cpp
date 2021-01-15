@@ -1,5 +1,5 @@
-#include "NeutrinoTrack.h"
-#include "NeutrinoEvent.h"
+#include "../../Public/Neutrino/NeutrinoTrack.h"
+#include "../../Public/Neutrino/NeutrinoEvent.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"

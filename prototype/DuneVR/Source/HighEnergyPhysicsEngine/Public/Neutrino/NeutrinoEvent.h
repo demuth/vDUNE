@@ -6,7 +6,7 @@
 #include "NeutrinoEvent.generated.h"
 
 UCLASS()
-class ANeutrinoEvent : public AActor
+class HIGHENERGYPHYSICSENGINE_API ANeutrinoEvent : public AActor
 {
 	GENERATED_BODY()
 
@@ -21,9 +21,14 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Mesh)
     TSubclassOf<ANeutrinoTrack> track_bp_;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=NeutrinoData)
+    TSubclassOf<ANeutrinoTrack> file_path_;
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	virtual void PostInitializeComponents() override;
+	virtual void PreInitializeComponents() override;
 
 private:
     TArray<class ANeutrinoTrack*> track_list_;

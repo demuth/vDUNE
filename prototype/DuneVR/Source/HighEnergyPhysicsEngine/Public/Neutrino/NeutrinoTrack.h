@@ -3,11 +3,11 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Engine/StaticMesh.h"
-#include "NeutrinoEventStruct.h"
+#include "../../Private/Neutrino/NeutrinoEventStruct.h"
 #include "NeutrinoTrack.generated.h"
 
 UCLASS()
-class ANeutrinoTrack : public AActor
+class HIGHENERGYPHYSICSENGINE_API ANeutrinoTrack : public AActor
 {
     GENERATED_BODY()
 
