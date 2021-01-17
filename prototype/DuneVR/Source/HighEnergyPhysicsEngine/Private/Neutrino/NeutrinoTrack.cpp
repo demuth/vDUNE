@@ -32,15 +32,12 @@ void ANeutrinoTrack::add_bounds(FVector location, FVector size)
 
 void ANeutrinoTrack::add_points(TArray<FNeutrinoPointData> points)
 {
-    int i = 0;
     for(auto &point : points)
     {
-        USphereComponent *sphere = NewObject<USphereComponent>(this, USphereComponent::StaticClass(), *FString::Printf(TEXT("sphere-%i"), i));
-        sphere->SetRelativeLocation(FVector(point.X, point.Y, point.Z));
-        sphere->InitSphereRadius(point.Charge * 0.001);
-        component_list_.Add(sphere);
-        sphere->AttachToComponent(GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
-        sphere->RegisterComponent();
-        i++;
+        auto new_point = GetWorld()->SpawnActor<ANeutrinoPoint>(point_bp_.Get(), GetActorLocation(), GetActorRotation());
+        new_point->SetActorRelativeLocation(FVector(point.X, point.Y, point.Z));
+        new_point->SetActorScale3D(FVector(point.Charge * .00002));
+        new_point->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
+        point_list_.Add(new_point);
     }
 };

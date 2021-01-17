@@ -22,7 +22,7 @@ protected:
     TSubclassOf<ANeutrinoTrack> track_bp_;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=NeutrinoData)
-    TSubclassOf<ANeutrinoTrack> file_path_;
+    FString file_path_;
 
 public:
 	// Called every frame
@@ -31,5 +31,5 @@ public:
 	virtual void PreInitializeComponents() override;
 
 private:
-    TArray<class ANeutrinoTrack*> track_list_;
+    TArray<ANeutrinoTrack*> track_list_;
 };

@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Engine/StaticMesh.h"
+#include "NeutrinoPoint.h"
 #include "../../Private/Neutrino/NeutrinoEventStruct.h"
 #include "NeutrinoTrack.generated.h"
 
@@ -22,9 +23,8 @@ protected:
     virtual void BeginPlay() override;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Mesh)
-    UStaticMesh* point_mesh_;
+    TSubclassOf<ANeutrinoPoint> point_bp_;
 
 private:
-    TArray<class USphereComponent*> component_list_;
-    TArray<class UStaticMeshComponent*> mesh_;
+    TArray<ANeutrinoPoint*> point_list_;
 };

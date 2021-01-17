@@ -71,10 +71,10 @@ void ANeutrinoEvent::PostInitializeComponents()
             auto track_y_center = track.Metadata.YAxisMinimum + track_y_range/2;
             auto track_z_center = track.Metadata.ZAxisMinimum + track_z_range/2;
 
-            auto new_track = GetWorld()->SpawnActor<ANeutrinoTrack>(GetActorLocation(), GetActorRotation());
+            auto new_track = GetWorld()->SpawnActor<ANeutrinoTrack>(track_bp_.Get(), GetActorLocation(), GetActorRotation());
 //            new_track->add_bounds(FVector(track_x_center, track_y_center, track_z_center), FVector(track_x_range, track_y_center, track_z_center));
             new_track->add_points(track.Points);
-            new_track->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+            new_track->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
             track_list_.Add(new_track);
             i++;
         }
