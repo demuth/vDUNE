@@ -38,6 +38,7 @@ void ANeutrinoTrack::add_points(TArray<FNeutrinoPointData> points)
         new_point->SetActorRelativeLocation(FVector(point.X, point.Y, point.Z));
         new_point->SetActorScale3D(FVector(point.Charge * .00002));
         new_point->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
+        new_point->set_charge_info(point.Charge);
         point_list_.Add(new_point);
     }
 };

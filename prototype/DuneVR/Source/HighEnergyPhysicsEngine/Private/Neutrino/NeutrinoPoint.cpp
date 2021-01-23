@@ -6,6 +6,8 @@
 
 // Sets default values
 ANeutrinoPoint::ANeutrinoPoint()
+: max_charge_(5000.0f)
+, charge_(-1)
 {
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -17,9 +19,7 @@ void ANeutrinoPoint::PostInitializeComponents()
 {
     Super::PostInitializeComponents();
 
-    UMaterialInstanceDynamic* material = UMaterialInstanceDynamic::Create(material_interface_, this);
-    material->SetVectorParameterValue("BaseColor", FLinearColor(1.0f, 0.0f, 0.0f, 1.0f));
-    mesh_->SetMaterial(0, material);
+    this->set_color_by_charge(charge_);
 }
 
 // Called when the game starts or when spawned
@@ -33,5 +33,23 @@ void ANeutrinoPoint::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ANeutrinoPoint::set_charge_info(double charge)
+{
+    charge_ = charge;
+}
+
+void ANeutrinoPoint::set_color_by_charge(double charge)
+{
+    // if the charge is less than zero, the parameter is invalid.
+    if (charge < 0) return;
+
+    // normalize charge
+    float spectrum_position = charge / max_charge_;
+
+    UMaterialInstanceDynamic* material = UMaterialInstanceDynamic::Create(material_interface_, this);
+    material->SetVectorParameterValue("BaseColor", FLinearColor(spectrum_position, spectrum_position, spectrum_position, 1.0f));
+    mesh_->SetMaterial(0, material);
 }
 

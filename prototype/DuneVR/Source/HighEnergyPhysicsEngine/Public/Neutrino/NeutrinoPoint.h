@@ -22,9 +22,18 @@ public:
 	virtual void Tick(float DeltaTime) override;
     virtual void PostInitializeComponents() override;
 
+    void set_charge_info(double charge);
+
     UPROPERTY(VisibleAnywhere, BlueprintReadonly, Category=Mesh, meta = (AllowPrivateAccess = "true"))
     class UStaticMeshComponent* mesh_;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Mesh, meta = (AllowPrivateAccess = "true"))
     class UMaterialInterface* material_interface_;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Charge, meta = (AllowPrivateAccess = "true"))
+    float max_charge_;
+
+private:
+    void set_color_by_charge(double charge);
+    double charge_;
 };
