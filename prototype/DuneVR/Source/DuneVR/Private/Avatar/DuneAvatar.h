@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "../Decorator/DecoratorBase.h"
 #include "Interfaces/Tools/AvatarTool.h"
 #include "Interfaces/Tools/EAvatarTool.h"
 #include "Interfaces/Modes/EAvatarMode.h"
@@ -12,7 +13,7 @@
 
 
 UCLASS(config=Game)
-class ADuneAvatar : public ACharacter
+class ADuneAvatar : public ACharacter, public DecoratorBase
 {
 	GENERATED_BODY()
 
