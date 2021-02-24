@@ -10,3 +10,8 @@ DecoratorBase::DecoratorBase()
 DecoratorBase::~DecoratorBase()
 {
 }
+
+void DecoratorBase::update(float dt)
+{
+    UE_LOG(LogTemp, Log, TEXT("Updating the decorator base."));
+}

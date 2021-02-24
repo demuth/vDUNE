@@ -12,4 +12,7 @@ class DecoratorBase
 public:
 	DecoratorBase();
 	~DecoratorBase();
+
+protected:
+	virtual void update(float dt);
 };
