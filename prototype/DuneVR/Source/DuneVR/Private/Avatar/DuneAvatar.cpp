@@ -1,5 +1,3 @@
-// Copyright 1998-2019 Epic Games, Inc. All Rights Reserved.
-
 #include "DuneAvatar.h"
 #include "DuneController.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
@@ -17,11 +15,13 @@
 #include "Avatar/Interfaces/Tools/AvatarTool.h"
 #include "Avatar/Interfaces/Tools/MeasureTool.h"
 #include "Avatar/Interfaces/Menus/PickupDisplayMenu.h"
+#include "Decorator/Decorator.h"
 
 //////////////////////////////////////////////////////////////////////////
 // ADuneAvatar
 
 ADuneAvatar::ADuneAvatar()
+: DecoratorBase()
 {
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
@@ -65,6 +65,9 @@ ADuneAvatar::ADuneAvatar()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
+
+	DecoratorBase::set_decorator_name("Avatar");
+	DecoratorBase::add_decorator<Decorator>();
 }
 
 //////////////////////////////////////////////////////////////////////////
