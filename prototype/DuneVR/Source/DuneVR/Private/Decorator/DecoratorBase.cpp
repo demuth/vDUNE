@@ -10,7 +10,14 @@ DecoratorBase::DecoratorBase()
 
 DecoratorBase::~DecoratorBase()
 {
-    UE_LOG(LogTemp, Log, TEXT("Deconstructing a decorator base. %d"), decorator_list_.size());
+    UE_LOG(LogTemp, Log, TEXT("Deconstructing a decorator: %s"), *decorator_name_);
+    for(auto &decorator : decorator_list_)
+    {
+        // update non-base decorators
+        if (!decorator->is_base()) delete decorator;
+    }
+
+    decorator_list_.clear();
 }
 
 void DecoratorBase::set_decorator_name(FString new_name)

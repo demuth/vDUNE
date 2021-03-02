@@ -6,6 +6,7 @@ Decorator::Decorator()
 
 Decorator::~Decorator()
 {
+    DecoratorBase::~DecoratorBase();
 }
 
 bool Decorator::is_base() { return false; }

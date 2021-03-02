@@ -15,7 +15,7 @@
 #include "Avatar/Interfaces/Tools/AvatarTool.h"
 #include "Avatar/Interfaces/Tools/MeasureTool.h"
 #include "Avatar/Interfaces/Menus/PickupDisplayMenu.h"
-#include "Decorator/Decorator.h"
+#include "Decorator/UserName.h"
 
 //////////////////////////////////////////////////////////////////////////
 // ADuneAvatar
@@ -67,7 +67,7 @@ ADuneAvatar::ADuneAvatar()
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 
 	DecoratorBase::set_decorator_name("Avatar");
-	DecoratorBase::add_decorator<Decorator>();
+	DecoratorBase::add_decorator<UserName>();
 }
 
 //////////////////////////////////////////////////////////////////////////

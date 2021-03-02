@@ -12,7 +12,9 @@ public:
 	Decorator();
 	~Decorator();
 
-private:
+protected:
     virtual void update(float dt);
-    virtual bool is_base();
+
+private:
+    bool is_base();
 };
