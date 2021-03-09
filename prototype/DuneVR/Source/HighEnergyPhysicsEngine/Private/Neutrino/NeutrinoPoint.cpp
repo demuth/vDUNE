@@ -38,17 +38,22 @@ void ANeutrinoPoint::Tick(float DeltaTime)
 void ANeutrinoPoint::set_charge_info(double charge)
 {
     charge_ = charge;
+    UE_LOG(LogClass, Error, TEXT("Charge set: %f "), charge);
+    this->set_color_by_charge(charge_);
 }
 
 void ANeutrinoPoint::set_color_by_charge(double charge)
 {
+    UE_LOG(LogClass, Error, TEXT("setting color"));
     // if the charge is less than zero, the parameter is invalid.
     if (charge < 0) return;
 
     // normalize charge
-    float spectrum_position = charge / max_charge_;
+    float spectrum_position;
+    spectrum_position = charge / max_charge_;
+    UE_LOG(LogClass, Error, TEXT("Charge: %f Max Charge: %f"), charge, max_charge_);
 
-    UMaterialInstanceDynamic* material = UMaterialInstanceDynamic::Create(material_interface_, this);
+    UMaterialInstanceDynamic *material = UMaterialInstanceDynamic::Create(material_interface_, this);
     material->SetVectorParameterValue("BaseColor", FLinearColor(spectrum_position, spectrum_position, spectrum_position, 1.0f));
     mesh_->SetMaterial(0, material);
 }
