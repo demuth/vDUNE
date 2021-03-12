@@ -16,6 +16,8 @@
 #include "Avatar/Interfaces/Tools/MeasureTool.h"
 #include "Avatar/Interfaces/Menus/PickupDisplayMenu.h"
 #include "Decorator/UserName.h"
+#include "Components/WidgetComponent.h"
+#include "Blueprint/UserWidget.h"
 
 //////////////////////////////////////////////////////////////////////////
 // ADuneAvatar
@@ -55,6 +57,10 @@ ADuneAvatar::ADuneAvatar()
 	collection_sphere_ = CreateDefaultSubobject<USphereComponent>(TEXT("CollectionSphere"));
 	collection_sphere_->AttachTo(RootComponent);
 	collection_sphere_->SetSphereRadius(200.0f);
+
+    decorator_w_ = CreateDefaultSubobject<UWidgetComponent>(TEXT("widget"));
+    decorator_w_->SetupAttachment(RootComponent);
+
 
     available_tool_.Add(EAvatarTool::None, nullptr);
 	available_tool_.Add(EAvatarTool::MeasureTool, nullptr);
@@ -126,6 +132,21 @@ void ADuneAvatar::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
     });
 
     PlayerInputComponent->AddActionBinding(InspectModeBinding);
+}
+
+void ADuneAvatar::BeginPlay()
+{
+    Super::BeginPlay();
+
+    auto cont = this->GetController<ADuneController>();
+    if (cont != nullptr)
+    {
+        auto w = cont->new_widget(decorator_widget_);
+        decorator_w_->SetWidget(w);
+        decorator_w_->SetDrawSize(decorator_size_);
+        decorator_w_->SetTwoSided(true);
+        decorator_w_->SetRelativeLocation(FVector(50, 0, decorator_height_));
+    }
 }
 
 void ADuneAvatar::Tick(float delta_seconds)

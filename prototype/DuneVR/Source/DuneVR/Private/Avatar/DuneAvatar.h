@@ -45,6 +45,17 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tools, EditFixedSize = "true")
     TMap<EAvatarMode, TSubclassOf<UAvatarMode>>  available_mode_;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Decorators)
+    TSubclassOf<class UUserWidget> decorator_widget_;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Decorators)
+    FVector2D decorator_size_;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Decorators)
+    float decorator_height_;
+
+    class UWidgetComponent* decorator_w_;
+
 public:
 	ADuneAvatar();
 
@@ -57,6 +68,7 @@ public:
 	float base_lookup_rate_;
 
 protected:
+    virtual void BeginPlay() override;
     virtual void Tick(float delta_seconds) override;
 
 	/** Resets HMD orientation in VR. */
