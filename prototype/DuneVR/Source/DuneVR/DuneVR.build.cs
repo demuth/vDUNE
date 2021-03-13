@@ -8,9 +8,9 @@ public class DuneVR : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay", "vDuneCore" });
 
-		PrivateDependencyModuleNames.AddRange(new string[] { "vDuneCore", "HighEnergyPhysicsEngine" });
+		PrivateDependencyModuleNames.AddRange(new string[] { "HighEnergyPhysicsEngine" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] { "UMG", "Slate", "SlateCore", "Json", "JsonUtilities" });
 		

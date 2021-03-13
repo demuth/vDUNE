@@ -6,13 +6,12 @@
 
 // Sets default values
 ANeutrinoPoint::ANeutrinoPoint()
-: max_charge_(5000.0f)
+: ASubject()
+, max_charge_(5000.0f)
 , charge_(-1)
 {
-	PrimaryActorTick.bCanEverTick = true;
-
-    mesh_ = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("pickup_mesh"));
-    RootComponent = mesh_;
+    point_mesh_ = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("point_mesh"));
+    RootComponent = point_mesh_;
 }
 
 void ANeutrinoPoint::PostInitializeComponents()
@@ -47,14 +46,18 @@ void ANeutrinoPoint::set_color_by_charge(double charge)
     UE_LOG(LogClass, Error, TEXT("setting color"));
     // if the charge is less than zero, the parameter is invalid.
     if (charge < 0) return;
+    // if the mesh is null, no color can be assigned.
+    if (!mesh_) return;
 
     // normalize charge
     float spectrum_position;
     spectrum_position = charge / max_charge_;
     UE_LOG(LogClass, Error, TEXT("Charge: %f Max Charge: %f"), charge, max_charge_);
 
+    // Try to create a material.  If it fails don't try to apply it.
     UMaterialInstanceDynamic *material = UMaterialInstanceDynamic::Create(material_interface_, this);
+    if (!material) return;
+
     material->SetVectorParameterValue("BaseColor", FLinearColor(spectrum_position, spectrum_position, spectrum_position, 1.0f));
     mesh_->SetMaterial(0, material);
 }
-

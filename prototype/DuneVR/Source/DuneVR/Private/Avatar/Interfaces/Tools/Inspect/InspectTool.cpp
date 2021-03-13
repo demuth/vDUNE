@@ -9,7 +9,7 @@
 #include "Components/ArrowComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "DrawDebugHelpers.h"
-#include "../../Inspectable/Subject.h"
+#include "vDuneCore/Public/Avatar/Interfaces/Inspectable/Subject.h"
 
 
 UInspectTool::UInspectTool()

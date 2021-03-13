@@ -21,5 +21,7 @@ public class HighEnergyPhysicsEngine : ModuleRules
         PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine" });
 
         PrivateDependencyModuleNames.AddRange(new string[] { "RenderCore", "Json", "JsonUtilities" });
+
+        PrivateDependencyModuleNames.AddRange(new string[] { "vDuneCore" });
 	}
 }

@@ -7,7 +7,7 @@
 #include "Subject.generated.h"
 
 UCLASS()
-class ASubject : public AActor
+class VDUNECORE_API ASubject : public AActor
 {
 	GENERATED_BODY()
 
@@ -15,7 +15,11 @@ public:
 	// Sets default values for this actor's properties
 	ASubject();
 
-    FString get_name() const;
+    UFUNCTION(BlueprintCallable, Category=SubjectData)
+    FString get_name();
+
+    UFUNCTION(BlueprintCallable, Category=SubjectData)
+    FString get_details();
 
 protected:
 	// Called when the game starts or when spawned
@@ -30,7 +34,6 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=SubjectData)
     FString details_;
 
-private:
-    UPROPERTY(VisibleAnywhere, BlueprintReadonly, Category=Mesh, meta = (AllowPrivateAccess = "true"))
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Mesh, meta = (AllowPrivateAccess = "true"))
     class UStaticMeshComponent* mesh_;
 };

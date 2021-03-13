@@ -2,10 +2,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "vDuneCore/Public/Avatar/Interfaces/Inspectable/Subject.h"
 #include "NeutrinoPoint.generated.h"
 
 UCLASS()
-class HIGHENERGYPHYSICSENGINE_API ANeutrinoPoint : public AActor
+class HIGHENERGYPHYSICSENGINE_API ANeutrinoPoint : public ASubject
 {
 	GENERATED_BODY()
 	
@@ -24,11 +25,11 @@ public:
 
     void set_charge_info(double charge);
 
-    UPROPERTY(VisibleAnywhere, BlueprintReadonly, Category=Mesh, meta = (AllowPrivateAccess = "true"))
-    class UStaticMeshComponent* mesh_;
-
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Mesh, meta = (AllowPrivateAccess = "true"))
     class UMaterialInterface* material_interface_;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Mesh, meta = (AllowPrivateAccess = "true"))
+    class UStaticMeshComponent* point_mesh_;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Charge, meta = (AllowPrivateAccess = "true"))
     float max_charge_;
