@@ -3,12 +3,12 @@
 using UnrealBuildTool;
 using System.Collections.Generic;
 
-public class HighEnergyPhysicsEngineTarget : TargetRules
+public class vDuneCoreTarget : TargetRules
 {
-	public HighEnergyPhysicsEngineTarget(TargetInfo Target) : base(Target)
+	public vDuneCoreTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Game;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
-		ExtraModuleNames.Add("HighEnergyPhysicsEngine");
+		ExtraModuleNames.Add("vDuneCore");
 	}
 }
