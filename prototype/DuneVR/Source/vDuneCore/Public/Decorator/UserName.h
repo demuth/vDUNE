@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Decorator/Decorator.h"
+#include "vDuneCore/Public/Decorator/Decorator.h"
 
 /**
  * 

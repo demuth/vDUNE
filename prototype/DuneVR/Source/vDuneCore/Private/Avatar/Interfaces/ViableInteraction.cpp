@@ -1,10 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "ViableInteraction.h"
-#include "PalpableActor.h"
+#include "vDuneCore/Public/Avatar/Interfaces/ViableInteraction.h"
+#include "vDuneCore/Public/Avatar/Interfaces/PalpableActor.h"
 #include "GameFramework/Pawn.h"
-#include "../DuneAvatar.h"
+#include "vDuneCore/Public/Avatar/DuneAvatar.h"
 
 UViableInteraction::UViableInteraction()
 : is_active_(false)

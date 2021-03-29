@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "../PalpableActor.h"
+#include "vDuneCore/Public/Avatar/Interfaces/PalpableActor.h"
 #include "PickupActor.generated.h"
 
 UCLASS()

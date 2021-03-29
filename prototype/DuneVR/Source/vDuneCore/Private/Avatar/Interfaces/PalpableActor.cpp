@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "PalpableActor.h"
-#include "../DuneAvatar.h"
-#include "ViableInteraction.h"
+#include "vDuneCore/Public/Avatar/Interfaces/PalpableActor.h"
+#include "vDuneCore/Public/Avatar/Interfaces/ViableInteraction.h"
+#include "vDuneCore/Public/Avatar/DuneAvatar.h"
 
 // Sets default values
 APalpableActor::APalpableActor()

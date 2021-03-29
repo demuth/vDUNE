@@ -1,10 +1,7 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "DuneController.h"
-#include "DuneAvatar.h"
-#include "DuneHUD.h"
-#include "Interfaces/Observable/ObjectViewer.h"
+#include "vDuneCore/Public/Avatar/DuneController.h"
+#include "vDuneCore/Public/Avatar/DuneAvatar.h"
+#include "vDuneCore/Public/Avatar/DuneHUD.h"
+#include "vDuneCore/Public/Avatar/Interfaces/Observable/ObjectViewer.h"
 #include "Blueprint/UserWidget.h"
 
 ADuneController::ADuneController()

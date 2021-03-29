@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
-#include "../Modes/AvatarMode.h"
+#include "vDuneCore/Public/Avatar/Interfaces/Modes/AvatarMode.h"
 #include "EAvatarTool.h"
 #include "AvatarTool.generated.h"
 
@@ -12,7 +12,7 @@
  * 
  */
 UCLASS(BlueprintType, Blueprintable, ConversionRoot)
-class UAvatarTool : public UAvatarMode
+class VDUNECORE_API UAvatarTool : public UAvatarMode
 {
 	GENERATED_BODY()
 

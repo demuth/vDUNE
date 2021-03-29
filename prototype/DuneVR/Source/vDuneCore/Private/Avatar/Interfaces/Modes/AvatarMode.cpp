@@ -1,7 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "AvatarMode.h"
+#include "vDuneCore/Public/Avatar/Interfaces/Modes/AvatarMode.h"
 #include "Blueprint/UserWidget.h"
 
 UAvatarMode::UAvatarMode()

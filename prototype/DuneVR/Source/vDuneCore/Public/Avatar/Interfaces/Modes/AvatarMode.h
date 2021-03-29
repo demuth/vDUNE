@@ -11,7 +11,7 @@
  *
  */
 UCLASS(BlueprintType, Blueprintable)
-class UAvatarMode : public UObject
+class VDUNECORE_API UAvatarMode : public UObject
 {
     GENERATED_BODY()
 

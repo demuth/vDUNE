@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "PickupModel.h"
+#include "vDuneCore/Public/Avatar/Interfaces/Pickup/PickupModel.h"
 
 void UPickupModel::Initialize(FString name, FString details)
 {

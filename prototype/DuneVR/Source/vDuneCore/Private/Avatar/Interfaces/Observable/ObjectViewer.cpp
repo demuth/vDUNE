@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "ObjectViewer.h"
-#include "ObservableActor.h"
-#include "../../DuneAvatar.h"
+#include "vDuneCore/Public/Avatar/Interfaces/Observable/ObjectViewer.h"
+#include "vDuneCore/Public/Avatar/Interfaces/Observable/ObservableActor.h"
+#include "vDuneCore/Public/Avatar/DuneAvatar.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 

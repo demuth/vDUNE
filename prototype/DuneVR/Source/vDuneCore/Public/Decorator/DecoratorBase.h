@@ -16,10 +16,15 @@ protected:
 
     template<class T>
     void add_decorator();
+    virtual bool is_base();
+
+    void construct(class USceneComponent* rootComponent);
+    void setup(class ADuneController* controller, TSubclassOf<class UUserWidget> widget_subclass_);
 	virtual void update(float dt);
-	virtual bool is_base();
+	void teardown();
 
 	FString decorator_name_;
+	class UWidgetComponent* widget_;
     std::vector<DecoratorBase*> decorator_list_;
 };
 

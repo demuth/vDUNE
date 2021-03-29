@@ -1,8 +1,5 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "../InspectTool.h"
-#include "../../../DuneAvatar.h"
+#include "vDuneCore/Public/Avatar/DuneAvatar.h"
 #include "GameFramework/Pawn.h"
 #include "Engine/StaticMeshActor.h"
 #include "Camera/CameraComponent.h"

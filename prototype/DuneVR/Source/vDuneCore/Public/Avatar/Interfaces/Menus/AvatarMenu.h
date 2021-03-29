@@ -11,7 +11,7 @@
  * 
  */
 UCLASS()
-class UAvatarMenu : public UAvatarMode
+class VDUNECORE_API UAvatarMenu : public UAvatarMode
 {
 	GENERATED_BODY()
 

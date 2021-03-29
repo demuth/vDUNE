@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "../Decorator/DecoratorBase.h"
+#include "vDuneCore/Public/Decorator/DecoratorBase.h"
 #include "Interfaces/Tools/AvatarTool.h"
 #include "Interfaces/Tools/EAvatarTool.h"
 #include "Interfaces/Modes/EAvatarMode.h"
@@ -11,7 +11,7 @@
 
 
 UCLASS(config=Game)
-class ADuneAvatar : public ACharacter, public DecoratorBase
+class VDUNECORE_API ADuneAvatar : public ACharacter, public DecoratorBase
 {
 	GENERATED_BODY()
 
@@ -47,14 +47,6 @@ protected:
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Decorators)
     TSubclassOf<class UUserWidget> decorator_widget_;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Decorators)
-    FVector2D decorator_size_;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Decorators)
-    float decorator_height_;
-
-    class UWidgetComponent* decorator_w_;
 
 public:
 	ADuneAvatar();

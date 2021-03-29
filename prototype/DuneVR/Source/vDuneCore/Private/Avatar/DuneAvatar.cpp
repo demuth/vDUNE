@@ -1,5 +1,5 @@
-#include "DuneAvatar.h"
-#include "DuneController.h"
+#include "vDuneCore/Public/Avatar/DuneAvatar.h"
+#include "vDuneCore/Public/Avatar/DuneController.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -8,15 +8,14 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Avatar/Interfaces/Pickup/PickupActor.h"
-#include "Avatar/Interfaces/Pickup/PickupModel.h"
-#include "Avatar/Interfaces/Observable/ObservableActor.h"
-#include "Avatar/Interfaces/ViableInteraction.h"
-#include "Avatar/Interfaces/Tools/AvatarTool.h"
-#include "Avatar/Interfaces/Tools/MeasureTool.h"
-#include "Avatar/Interfaces/Menus/PickupDisplayMenu.h"
-#include "Decorator/UserName.h"
-#include "Components/WidgetComponent.h"
+#include "vDuneCore/Public/Avatar/Interfaces/Pickup/PickupActor.h"
+#include "vDuneCore/Public/Avatar/Interfaces/Pickup/PickupModel.h"
+#include "vDuneCore/Public/Avatar/Interfaces/Observable/ObservableActor.h"
+#include "vDuneCore/Public/Avatar/Interfaces/ViableInteraction.h"
+#include "vDuneCore/Public/Avatar/Interfaces/Tools/AvatarTool.h"
+#include "vDuneCore/Public/Avatar/Interfaces/Tools/MeasureTool.h"
+#include "vDuneCore/Public/Avatar/Interfaces/Menus/AvatarMenu.h"
+#include "vDuneCore/Public/Decorator/UserName.h"
 #include "Blueprint/UserWidget.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -57,10 +56,6 @@ ADuneAvatar::ADuneAvatar()
 	collection_sphere_ = CreateDefaultSubobject<USphereComponent>(TEXT("CollectionSphere"));
 	collection_sphere_->AttachTo(RootComponent);
 	collection_sphere_->SetSphereRadius(200.0f);
-
-    decorator_w_ = CreateDefaultSubobject<UWidgetComponent>(TEXT("widget"));
-    decorator_w_->SetupAttachment(RootComponent);
-
 
     available_tool_.Add(EAvatarTool::None, nullptr);
 	available_tool_.Add(EAvatarTool::MeasureTool, nullptr);
@@ -139,14 +134,7 @@ void ADuneAvatar::BeginPlay()
     Super::BeginPlay();
 
     auto cont = this->GetController<ADuneController>();
-    if (cont != nullptr)
-    {
-        auto w = cont->new_widget(decorator_widget_);
-        decorator_w_->SetWidget(w);
-        decorator_w_->SetDrawSize(decorator_size_);
-        decorator_w_->SetTwoSided(true);
-        decorator_w_->SetRelativeLocation(FVector(50, 0, decorator_height_));
-    }
+
 }
 
 void ADuneAvatar::Tick(float delta_seconds)

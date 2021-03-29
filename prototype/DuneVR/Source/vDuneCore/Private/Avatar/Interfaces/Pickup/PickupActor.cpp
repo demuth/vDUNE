@@ -1,10 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "PickupActor.h"
-#include "PickupModel.h"
-#include "../../DuneAvatar.h"
-#include "../ViableInteraction.h"
+#include "vDuneCore/Public/Avatar/Interfaces/Pickup/PickupActor.h"
+#include "vDuneCore/Public/Avatar/Interfaces/Pickup/PickupModel.h"
+#include "vDuneCore/Public/Avatar/DuneAvatar.h"
+#include "vDuneCore/Public/Avatar/Interfaces/ViableInteraction.h"
 #include "Components/CapsuleComponent.h"
 
 // Sets default values
