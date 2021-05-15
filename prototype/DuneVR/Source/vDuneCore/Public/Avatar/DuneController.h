@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class ADuneController : public APlayerController
+class VDUNECORE_API ADuneController : public APlayerController
 {
 	GENERATED_BODY()
 

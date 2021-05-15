@@ -21,8 +21,9 @@
 //////////////////////////////////////////////////////////////////////////
 // ADuneAvatar
 
-ADuneAvatar::ADuneAvatar()
-: DecoratorBase()
+ADuneAvatar::ADuneAvatar(const FObjectInitializer& ObjectInitializer)
+: Super(ObjectInitializer)
+, DecoratorBase()
 {
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
@@ -37,7 +38,7 @@ ADuneAvatar::ADuneAvatar()
 	bUseControllerRotationRoll = false;
 
 	// Configure character movement
-	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...	
+	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f); // ...at this rotation rate
 	GetCharacterMovement()->JumpZVelocity = 600.f;
 	GetCharacterMovement()->AirControl = 0.2f;
@@ -64,11 +65,18 @@ ADuneAvatar::ADuneAvatar()
     available_mode_.Add(EAvatarMode::Roam, nullptr);
     available_mode_.Add(EAvatarMode::Menu, nullptr);
 
-	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
+	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character)
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 
 	DecoratorBase::set_decorator_name("Avatar");
 	DecoratorBase::add_decorator<UserName>();
+}
+
+void ADuneAvatar::BeginPlay()
+{
+    Super::BeginPlay();
+
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -127,14 +135,6 @@ void ADuneAvatar::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
     });
 
     PlayerInputComponent->AddActionBinding(InspectModeBinding);
-}
-
-void ADuneAvatar::BeginPlay()
-{
-    Super::BeginPlay();
-
-    auto cont = this->GetController<ADuneController>();
-
 }
 
 void ADuneAvatar::Tick(float delta_seconds)
@@ -377,72 +377,12 @@ void ADuneAvatar::set_measure_mode()
 
 void ADuneAvatar::use_tool(EAvatarTool tool)
 {
-    auto type = available_tool_.Find(tool);
-    auto controller = this->GetController<ADuneController>();
-
-    //tear down any existing mode.
-    if (mode_)
-    {
-        mode_->teardown();
-    }
-
-
-    if (!type || type->Get() == nullptr)
-    {
-        UE_LOG(LogClass, Error, TEXT("Tool class was not found. "));
-        mode_ = nullptr;
-    }
-    else
-    {
-        if (controller != nullptr)
-        {
-            //assign a new mode instance and set it up.
-            mode_ = NewObject<UAvatarTool>(this, type->Get());
-            controller->update_hud();
-
-            if (mode_)
-            {
-                mode_->setup( this, &GetWorldTimerManager() );
-            }
-        }
-    }
+    TSubclassOf<UAvatarMode>*  type = available_tool_.Find(tool);
+    this->set_user_mode(type);
 }
 
 void ADuneAvatar::set_mode(EAvatarMode mode)
 {
-    auto type = available_mode_.Find(mode);
-    auto controller = this->GetController<ADuneController>();
-
-    //tear down any existing mode.
-    if (mode_ != nullptr)
-    {
-        mode_->teardown();
-    }
-
-
-    if (!type || type->Get() == nullptr)
-    {
-        UE_LOG(LogClass, Error, TEXT("Tool class was not found. "));
-        mode_ = nullptr;
-    }
-    else
-    {
-        //assign a new mode instance and set it up.
-        if (controller != nullptr)
-        {
-            mode_ = NewObject<UAvatarMode>(this, type->Get());
-            controller->update_hud();
-
-            //mode_ was reassigned therefore check that it is still valid.
-            if (mode_ != nullptr)
-            {
-                mode_->setup( this, &GetWorldTimerManager() );
-            }
-        }
-    }
-}
-
-UAvatarMode* ADuneAvatar::get_avatar_mode() const
-{
-    return mode_;
+    TSubclassOf<UAvatarMode>* type = available_mode_.Find(mode);
+    this->set_user_mode(type);
 }

@@ -1,17 +1,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "../UserBase/UserBase.h"
 #include "vDuneCore/Public/Decorator/DecoratorBase.h"
 #include "Interfaces/Tools/AvatarTool.h"
 #include "Interfaces/Tools/EAvatarTool.h"
-#include "Interfaces/Modes/EAvatarMode.h"
 #include "DuneAvatar.generated.h"
 
 
 
 UCLASS(config=Game)
-class VDUNECORE_API ADuneAvatar : public ACharacter, public DecoratorBase
+class VDUNECORE_API ADuneAvatar : public AUserBase, public DecoratorBase
 {
 	GENERATED_BODY()
 
@@ -35,12 +34,9 @@ class VDUNECORE_API ADuneAvatar : public ACharacter, public DecoratorBase
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
     TMap<FString, class UViableInteraction *>  viable_interactions_;
 
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Mode, meta = (AllowPrivateAccess = "true"))
-    class UAvatarMode * mode_;
-
 protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tools, EditFixedSize = "true")
-    TMap<EAvatarTool, TSubclassOf<UAvatarTool>>  available_tool_;
+    TMap<EAvatarTool, TSubclassOf<UAvatarMode>>  available_tool_;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tools, EditFixedSize = "true")
     TMap<EAvatarMode, TSubclassOf<UAvatarMode>>  available_mode_;
@@ -49,7 +45,7 @@ protected:
     TSubclassOf<class UUserWidget> decorator_widget_;
 
 public:
-	ADuneAvatar();
+	ADuneAvatar(const FObjectInitializer& ObjectInitializer);
 
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
@@ -118,8 +114,8 @@ public:
 	FORCEINLINE class UCameraComponent* get_follow_camera() const { return follow_camera_; }
     FORCEINLINE class USphereComponent* get_collection_sphere() const { return collection_sphere_; }
 
-    UFUNCTION(BlueprintCallable, Category=ModeLogic)
-    class UAvatarMode* get_avatar_mode() const;
+    UFUNCTION(BlueprintCallable, Category=Mode)
+    void set_mode(EAvatarMode mode);
 
     bool add_collectible(class UPickupModel * collectible_data);
 
@@ -127,9 +123,6 @@ public:
 
     void set_inspect_mode();
     void set_measure_mode();
-
-    UFUNCTION(BlueprintCallable, Category=Mode)
-    void set_mode(EAvatarMode mode);
 };
 
 

@@ -15,9 +15,7 @@ UInspectTool::UInspectTool()
     tool_type_ = EAvatarTool::InspectTool;
 }
 
-UInspectTool::~UInspectTool()
-{
-}
+UInspectTool::~UInspectTool() = default;
 
 void UInspectTool::setup(APawn * pawn, FTimerManager *manager)
 {
@@ -31,9 +29,7 @@ void UInspectTool::update()
 
     ADuneAvatar * avatar = Cast<ADuneAvatar>(pawn_);
 
-    if (!avatar)
-        return;
-
+    if (!avatar) return;
     auto avatar_mesh = avatar->GetMesh();
 
     auto up = FVector(0, 0, 1);

@@ -2,7 +2,7 @@
 
 
 #include "vDuneCore/Public/Avatar/DuneHUD.h"
-#include "vDuneCore/Public/Avatar/DuneAvatar.h"
+#include "vDuneCore/Public/UserBase/UserBase.h"
 #include "vDuneCore/Public/Avatar/DuneController.h"
 #include "Blueprint/UserWidget.h"
 
@@ -21,11 +21,14 @@ UUserWidget * ADuneHUD::update_hud_widget()
     UUserWidget * widget = nullptr;
 
     UE_LOG(LogClass, Log, TEXT("Updating HUD widget. . ."));
-    auto avatar = Cast<ADuneAvatar>(GetOwningPawn());
 
+    // Get a reference to the user.
+    auto avatar = Cast<AUserBase>(GetOwningPawn());
+
+    // Check if the pawn is a valid avatar.
     if (avatar)
     {
-        const auto mode = avatar->get_avatar_mode();
+        const auto mode = avatar->get_user_mode();
         auto controller = avatar->GetController<ADuneController>();
 
         TSubclassOf<class UUserWidget> hud_type;

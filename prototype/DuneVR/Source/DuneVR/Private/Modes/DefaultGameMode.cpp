@@ -1,14 +1,21 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "DefaultGameMode.h"
+#include "vDuneCore/Public/Avatar/DuneAvatar.h"
+#include "vDuneCore/Public/User/MenuUser.h"
 
-ADefaultGameMode::ADefaultGameMode()
+#include "Kismet/GameplayStatics.h"
+
+ADefaultGameMode::ADefaultGameMode(const FObjectInitializer& ObjectInitializer)
+: Super(ObjectInitializer)
 {
-    // set default pawn class to our Blueprinted character
-    static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/ThirdPersonCPP/Blueprints/DuneAvatarBP"));
-    if (PlayerPawnBPClass.Class != NULL)
-    {
-        DefaultPawnClass = PlayerPawnBPClass.Class;
-    }
+
+}
+
+void ADefaultGameMode::BeginPlay()
+{
+    Super::BeginPlay();
+}
+
+UDuneState ADefaultGameMode::get_state()
+{
+    return UDuneState::Select;
 }
