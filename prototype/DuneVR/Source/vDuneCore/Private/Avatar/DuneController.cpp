@@ -21,6 +21,8 @@ void ADuneController::SetupInputComponent()
     // Set up menu key bindings
     InputComponent->BindAction("ShowCollectibles", IE_Released, this, &ADuneController::toggle_collectibles_display);
 
+    InputComponent->BindAction("ServerMenu", IE_Released, this, &ADuneController::toggle_server_menu);
+
     // Interaction bindings
     InputComponent->BindAction("Interact", IE_Released, this, &ADuneController::on_interaction_command);
 }
@@ -33,6 +35,17 @@ void ADuneController::toggle_collectibles_display()
     if (avatar)
     {
         avatar->set_mode(EAvatarMode::Menu);
+    }
+}
+
+void ADuneController::toggle_server_menu()
+{
+    UE_LOG(LogClass, Log, TEXT("toggle server menu"));
+    ADuneAvatar * avatar = Cast<ADuneAvatar>(GetPawn());
+
+    if (avatar)
+    {
+        avatar->set_mode(EAvatarMode::ServerMenu);
     }
 }
 

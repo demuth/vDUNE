@@ -6,7 +6,8 @@
 #include "Online.h"
 #include "vDuneInstance.generated.h"
 
-enum class ApplicationState
+UENUM(BlueprintType)
+enum class ApplicationState : uint8
 {
     Unknown,
     Initial,
@@ -58,6 +59,9 @@ public:
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Widgets)
     TSubclassOf<class UUserWidget> initial_menu_widget_;
+
+    UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "DuneStates")
+    void StateChanged(ApplicationState state);
 
 private:
     void set_state(ApplicationState new_state);

@@ -64,6 +64,7 @@ ADuneAvatar::ADuneAvatar(const FObjectInitializer& ObjectInitializer)
 
     available_mode_.Add(EAvatarMode::Roam, nullptr);
     available_mode_.Add(EAvatarMode::Menu, nullptr);
+    available_mode_.Add(EAvatarMode::ServerMenu, nullptr);
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character)
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)

@@ -35,20 +35,18 @@ void UvDuneInstance::handle_state(ApplicationState new_state)
 {
     switch(new_state)
     {
-        case ApplicationState::Initial: on_initial_state(); break;
-        case ApplicationState::Active: on_active_state(); break;
+        case ApplicationState::Initial: on_initial_state();
+            GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, FString::Printf(TEXT("State initial")));
+            on_initial_state();
+        break;
+        case ApplicationState::Active: on_active_state();
+            GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, FString::Printf(TEXT("State active")));
+            on_active_state();
+        break;
     }
 }
 
-void UvDuneInstance::on_initial_state()
-{
-    UE_LOG(LogClass, Log, TEXT("~~~ Initial State ~~~"));
 
-//    for(FConstPawnIterator Iterator = GetWorld()->GetPawnIterator(); Iterator; ++Iterator)
-//    {
-//        UE_LOG(LogClass, Log, TEXT("Pawn found."));
-//    }
-}
 
 void UvDuneInstance::StartOnlineGame()
 {
@@ -169,23 +167,20 @@ void UvDuneInstance::OnStartOnlineGameComplete(FName SessionName, bool bWasSucce
 {
     GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red, FString::Printf(TEXT("OnStartSessionComplete %s, %d"), *SessionName.ToString(), bWasSuccessful));
 
-    // Get the Online Subsystem so we can get the Session Interface
     IOnlineSubsystem* OnlineSub = IOnlineSubsystem::Get();
     if (OnlineSub)
     {
-        // Get the Session Interface to clear the Delegate
         IOnlineSessionPtr Sessions = OnlineSub->GetSessionInterface();
         if (Sessions.IsValid())
         {
-            // Clear the delegate, since we are done with this call
             Sessions->ClearOnStartSessionCompleteDelegate_Handle(OnStartSessionCompleteDelegateHandle);
         }
     }
 
-    // If the start was successful, we can open a NewMap if we want. Make sure to use "listen" as a parameter!
     if (bWasSuccessful)
     {
-        UGameplayStatics::OpenLevel(GetWorld(), "NeutrinoSandBox", true, "listen");
+        this->set_state(ApplicationState::Active);
+        UGameplayStatics::OpenLevel(GetWorld(), "OnlineTest", true);
     }
 }
 
@@ -310,13 +305,25 @@ void UvDuneInstance::OnDestroySessionComplete(FName SessionName, bool bWasSucces
 
             if (bWasSuccessful)
             {
+                this->set_state(ApplicationState::Initial);
                 UGameplayStatics::OpenLevel(GetWorld(), "Landing", true);
             }
         }
     }
 }
 
+void UvDuneInstance::on_initial_state()
+{
+    UE_LOG(LogClass, Log, TEXT("~~~ Initial State ~~~"));
+
+    StateChanged(ApplicationState::Initial);
+//    for(FConstPawnIterator Iterator = GetWorld()->GetPawnIterator(); Iterator; ++Iterator)
+//    {
+//        UE_LOG(LogClass, Log, TEXT("Pawn found."));
+//    }
+}
+
 void UvDuneInstance::on_active_state()
 {
-
+    StateChanged(ApplicationState::Active);
 }

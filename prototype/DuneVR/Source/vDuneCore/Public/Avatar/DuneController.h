@@ -31,5 +31,6 @@ protected:
 
 private:
     void toggle_collectibles_display();
+    void toggle_server_menu();
     void on_interaction_command();
 };

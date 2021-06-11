@@ -12,5 +12,6 @@ enum class EAvatarMode : uint8
 {
     Roam = 0,
     Tool,
-    Menu
+    Menu,
+    ServerMenu
 };
