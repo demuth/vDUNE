@@ -123,6 +123,7 @@ public:
 
     void set_inspect_mode();
     void set_measure_mode();
+    void set_ball_drop_experiment_mode();
 };
 
 

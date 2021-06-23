@@ -61,6 +61,7 @@ ADuneAvatar::ADuneAvatar(const FObjectInitializer& ObjectInitializer)
     available_tool_.Add(EAvatarTool::None, nullptr);
 	available_tool_.Add(EAvatarTool::MeasureTool, nullptr);
 	available_tool_.Add(EAvatarTool::InspectTool, nullptr);
+	available_tool_.Add(EAvatarTool::BallDropExperiment, nullptr);
 
     available_mode_.Add(EAvatarMode::Roam, nullptr);
     available_mode_.Add(EAvatarMode::Menu, nullptr);
@@ -134,8 +135,14 @@ void ADuneAvatar::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
     {
         this->set_inspect_mode();
     });
-
     PlayerInputComponent->AddActionBinding(InspectModeBinding);
+
+    FInputActionBinding BallDropExperimentBinding( "BallDrop", IE_Released );
+    BallDropExperimentBinding.ActionDelegate.GetDelegateForManualSet().BindLambda( [this]()
+    {
+        this->set_ball_drop_experiment_mode();
+    });
+    PlayerInputComponent->AddActionBinding(BallDropExperimentBinding);
 }
 
 void ADuneAvatar::Tick(float delta_seconds)
@@ -374,6 +381,20 @@ void ADuneAvatar::set_measure_mode()
         this->set_mode(EAvatarMode::Roam);
     }
 
+}
+
+void ADuneAvatar::set_ball_drop_experiment_mode()
+{
+    auto tool = Cast<UAvatarTool>(mode_);
+
+    if (!tool || tool->get_tool_type() != EAvatarTool::BallDropExperiment)
+    {
+        this->use_tool(EAvatarTool::BallDropExperiment);
+    }
+    else
+    {
+        this->set_mode(EAvatarMode::Roam);
+    }
 }
 
 void ADuneAvatar::use_tool(EAvatarTool tool)

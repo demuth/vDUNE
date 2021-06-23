@@ -9,5 +9,6 @@ enum class EAvatarTool : uint8
 {
     None = 0,
     MeasureTool,
-    InspectTool
+    InspectTool,
+    BallDropExperiment
 };
