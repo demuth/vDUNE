@@ -149,7 +149,7 @@ void ADuneAvatar::Tick(float delta_seconds)
 {
     DecoratorBase::update(delta_seconds);
 
-    camera_boom_->SetWorldLocation((mode_ != nullptr) ? mode_->calculate_camera_displacement(this->get_follow_camera()->GetForwardVector(), this->GetActorLocation()) : this->GetActorLocation());
+    camera_boom_->SetWorldTransform((mode_ != nullptr) ? mode_->calculate_camera_displacement(this->get_follow_camera()->GetForwardVector(), this->GetActorLocation()) : this->GetActorTransform());
     camera_boom_->TargetArmLength = (mode_ != nullptr) ? mode_->calculate_camera_arm_length() : 300.0f;
 
     detect_viable_interactions();

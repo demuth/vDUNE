@@ -23,7 +23,7 @@ public:
 protected:
     virtual void setup(class APawn * pawn, FTimerManager *manager) override;
     virtual void teardown() override;
-    virtual FVector calculate_camera_displacement(FVector avatar_forward_vector, FVector avatar_world_location) override;
+    virtual FTransform calculate_camera_displacement(FVector avatar_forward_vector, FVector avatar_world_location) override;
     virtual float calculate_camera_arm_length() override;
 
 private:

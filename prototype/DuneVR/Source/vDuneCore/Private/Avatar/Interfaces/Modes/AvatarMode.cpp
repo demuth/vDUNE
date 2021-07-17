@@ -35,9 +35,9 @@ void UAvatarMode::update()
 
 }
 
-FVector UAvatarMode::calculate_camera_displacement(FVector avatar_forward_vector, FVector avatar_world_location)
+FTransform UAvatarMode::calculate_camera_displacement(FVector avatar_forward_vector, FVector avatar_world_location)
 {
-    return avatar_world_location;
+    return FTransform(FRotator(), avatar_world_location, FVector(1));
 }
 
 float UAvatarMode::calculate_camera_arm_length()

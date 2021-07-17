@@ -63,11 +63,12 @@ void UMeasureTool::update()
     }
 }
 
-FVector UMeasureTool::calculate_camera_displacement(FVector forward, FVector start)
+FTransform UMeasureTool::calculate_camera_displacement(FVector forward, FVector start)
 {
     auto up_vector = FVector(0,0,1);
 
-    return (FVector::CrossProduct(up_vector, forward) * 100) + start + FVector(0,0,25);
+    auto vec = (FVector::CrossProduct(up_vector, forward) * 100) + start + FVector(0,0,25);
+    return FTransform(FRotator(), vec, FVector(1));
 }
 
 float UMeasureTool::calculate_camera_arm_length()

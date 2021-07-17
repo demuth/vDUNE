@@ -24,7 +24,7 @@ public:
     virtual void setup(class APawn * pawn, FTimerManager *manager);
     virtual void teardown();
 
-    virtual FVector calculate_camera_displacement(FVector avatar_forward_vector, FVector avatar_world_location);
+    virtual FTransform calculate_camera_displacement(FVector avatar_forward_vector, FVector avatar_world_location);
     virtual float calculate_camera_arm_length();
 
 protected:
