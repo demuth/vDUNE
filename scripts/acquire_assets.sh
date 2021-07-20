@@ -1,16 +1,13 @@
 #!/bin/bash
 
 cern="https://edms.cern.ch/file/"
-path=/Users/lucassorenson/Code/dune/Subversion/trunk/assets/files/
+path=$(dirname $(dirname "$0"))/assets/files/
 asset=2173180/6/
 
-files=(Cavern_S_-_Chamber_ES_-_Warm_Cryostat_SP_-_Primary_Membrane_-_FULL \
-Cavern_S_-_Chamber_ES_-_Warm_Cryostat_SP_-_Primary_Membrane_-_Bottom \
-Cavern_S_-_Chamber_ES_-_Warm_Cryostat_SP_-_Primary_Membrane_-_Top \
-Cavern_S_-_Chamber_ES_-_Warm_Cryostat_SP_-_Primary_Membrane_-_North \
-Cavern_S_-_Chamber_ES_-_Warm_Cryostat_SP_-_Primary_Membrane_-_South \
-Cavern_S_-_Chamber_ES_-_Warm_Cryostat_SP_-_Primary_Membrane_-_East \
-Cavern_S_-_Chamber_ES_-_Warm_Cryostat_SP_-_Primary_Membrane_-_West)
+files=()
+while IFS= read -r line; do
+   files+=("$line")
+done <$(dirname "$0")/Config/2173180.7
 
 extensions=(.png .nwd)
 
