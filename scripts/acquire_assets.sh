@@ -26,8 +26,8 @@ mkdir -p ${path}${asset}
 # Retrieving those files from CERN
 for filename in ${files[@]}; do
   for extension in ${extensions[@]}; do
-    wget \
+    r=$(wget \
     -O ${path}${asset}${filename}${extension} \
-    ${cern}${asset}${filename}${extension}
+    ${cern}${asset}${filename}${extension})
   done
 done
