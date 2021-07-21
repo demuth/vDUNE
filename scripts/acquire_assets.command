@@ -18,11 +18,26 @@ $(dirname "$0")/acquire_assets.sh 2066948 7
 $(dirname "$0")/acquire_assets.sh 2066661 6
 $(dirname "$0")/acquire_assets.sh 2066661 7
 
-$(dirname "$0")/acquire_assets.sh 2065325 6
-$(dirname "$0")/acquire_assets.sh 2065325 7
+$(dirname "$0")/acquire_assets.sh 2066325 6
+$(dirname "$0")/acquire_assets.sh 2066325 7
 
 $(dirname "$0")/acquire_assets.sh 2065465 6
 $(dirname "$0")/acquire_assets.sh 2065465 7
 
 $(dirname "$0")/acquire_assets.sh 2065464 6
 $(dirname "$0")/acquire_assets.sh 2065464 7
+
+$(dirname "$0")/acquire_assets.sh 2065463 6
+$(dirname "$0")/acquire_assets.sh 2065463 7
+
+$(dirname "$0")/acquire_assets.sh 2060167 6
+$(dirname "$0")/acquire_assets.sh 2060167 7
+
+$(dirname "$0")/acquire_assets.sh 2060166 6
+$(dirname "$0")/acquire_assets.sh 2060166 7
+
+$(dirname "$0")/acquire_assets.sh 2060165 6
+$(dirname "$0")/acquire_assets.sh 2060165 7
+
+$(dirname "$0")/acquire_assets.sh 2382382 6
+$(dirname "$0")/acquire_assets.sh 2382382 7
