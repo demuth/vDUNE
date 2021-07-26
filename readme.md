@@ -18,7 +18,12 @@ We recommend Subversion for this project because it allows commits with a greate
 
 #### Clone using Subversion:
 > Enter the following command into a terminal or command prompt to checkout the repository.
->
+> #### Subversion client
 > ```bash
 > svn checkout https://github.com/lmsorenson/vDUNE
 > ```
+>
+> ##### git svn (Windows compatible):
+> ```bash
+> git svn clone -s https://github.com/lmsorenson/vDUNE
+>```
