@@ -1,3 +1,4 @@
+[![Documentation Status](https://readthedocs.org/projects/vdune/badge/?version=latest)](https://vdune.readthedocs.io/en/latest/?badge=latest)
 # vDUNE
 
 ## Setup vDUNE
