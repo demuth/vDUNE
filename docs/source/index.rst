@@ -11,10 +11,4 @@ vDUNE
    :caption: Contents:
    
    vision
-
-
-
-Indices and tables
-==================
-
-* :ref:`vision`
+   usecases
