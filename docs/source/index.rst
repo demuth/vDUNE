@@ -9,6 +9,7 @@ vDUNE
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+   
    vision
 
 
@@ -16,6 +17,4 @@ vDUNE
 Indices and tables
 ==================
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+* :ref:`vision`
