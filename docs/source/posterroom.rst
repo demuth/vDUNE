@@ -1,3 +1,6 @@
 Poster Room
 ^^^^^^^^^^^
-<img src="https://github.com/lmsorenson/vDUNE/edit/master/diagrams/PosterRoom/Observable.jpg" alt="Class Diagram for observable actor. "/>
+
+.. image:: https://github.com/lmsorenson/vDUNE/edit/master/diagrams/PosterRoom/Observable.jpg
+  :width: 900
+  :alt: Alternative text
