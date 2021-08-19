@@ -153,7 +153,6 @@ void ADuneAvatar::Tick(float delta_seconds)
     camera_boom_->TargetArmLength = (mode_ != nullptr) ? mode_->calculate_camera_arm_length() : 300.0f;
 
     detect_viable_interactions();
-
     update_viable_interactions();
 }
 
@@ -216,13 +215,15 @@ void ADuneAvatar::move_right(float Value)
 void ADuneAvatar::detect_viable_interactions()
 {
     TArray<AActor*> collected_actors;
-    get_collection_sphere()->GetOverlappingActors(collected_actors);
+    get_collection_sphere()->GetOverlappingActors(collected_actors, APalpableActor::StaticClass());
 
+    /// Iterate through all collected actors.
     for (int32 i = 0; i < collected_actors.Num(); ++i)
     {
+        /// Try cast as a pickup.
         APickupActor* const pickup_candidate = Cast<APickupActor>(collected_actors[i]);
 
-        //Executed on active pickups in the sphere of influence.
+        /// Executed on active pickups in the sphere of influence.
         if (pickup_candidate && !pickup_candidate->IsPendingKill())
         {
             if (pickup_candidate->actor_interaction_viable(this)  && !viable_interactions_.Find(pickup_candidate->GetName()))
@@ -233,6 +234,7 @@ void ADuneAvatar::detect_viable_interactions()
             }
         }
 
+        /// Try cast as an observable.
         AObservableActor* const observable_candidate = Cast<AObservableActor>(collected_actors[i]);
 
         //Executed on active pickups in the sphere of influence.
