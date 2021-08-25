@@ -53,11 +53,13 @@ bool AObservableActor::actor_interaction_viable(const ADuneAvatar * const avatar
 
 void AObservableActor::interact(ADuneAvatar * const avatar, UViableInteraction * interaction, bool &is_active)
 {
-    if (!avatar)
-        return;
+    /// Stop execution if the avatar is not valid.
+    if (!avatar) return;
 
+    /// Call the base functionality.
     APalpableActor::interact(avatar, interaction, is_active);
 
+    /// Called if the interaction is currently in the active state.
     if (!is_active)
     {
         if (avatar->Controller)
@@ -70,6 +72,8 @@ void AObservableActor::interact(ADuneAvatar * const avatar, UViableInteraction *
             is_active = true;
         }
     }
+
+    /// Called if the interaction is currently in an inactive state.
     else
     {
         if (avatar->Controller)
@@ -83,5 +87,9 @@ void AObservableActor::interact(ADuneAvatar * const avatar, UViableInteraction *
 
 void AObservableActor::fun()
 {
-    UE_LOG(LogClass, Log, TEXT("FUN()"));
+    UE_LOG(LogClass, Log, TEXT("Ending interaction"));
+//    if (!avatar) return;
+//    if (!avatar->Controller) return;
+//
+//    avatar->Controller->Possess( avatar );
 }

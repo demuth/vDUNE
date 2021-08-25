@@ -42,17 +42,20 @@ bool UViableInteraction::is_viable()
 
 void UViableInteraction::commit()
 {
+    /// Check that the Avatar pointer is valid and not being destroyed.
     if (!avatar_ || avatar_->IsPendingKill())
     {
         UE_LOG(LogClass, Error, TEXT("Interaction was not initialized. "))
         return;
     }
 
+    /// Check that the object pointer is valid and not being destroyed.
     if (!palpable_object_ || palpable_object_->IsPendingKill())
     {
         UE_LOG(LogClass, Error, TEXT("Interaction was not initialized. "))
         return;
     }
 
+    /// Initiate the interaction.
     palpable_object_->interact( avatar_, this, is_active_ );
 }

@@ -47,6 +47,7 @@ void AObjectViewer::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 void AObjectViewer::try_end_viewer_session()
 {
+    /// Execute the delegate.
     UE_LOG(LogClass, Log, TEXT("%s is trying to initiate an interaction. "), *this->GetName());
     delegate_.ExecuteIfBound();
 }

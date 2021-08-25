@@ -264,8 +264,10 @@ void ADuneAvatar::try_interaction()
 {
     UE_LOG(LogClass, Log, TEXT("%s is trying to initiate an interaction. "), *this->GetName());
 
+    /// Initiates all interactions.
     for (auto itr = viable_interactions_.CreateConstIterator(); itr; ++itr)
     {
+        /// Get the value of the interaction.
         auto interaction = itr.Value();
 
         if (interaction)
