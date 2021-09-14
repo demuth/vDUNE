@@ -38,5 +38,5 @@ public:
 
     virtual void interact(class ADuneAvatar * const avatar, class UViableInteraction * interaction, bool &is_active) override;
 
-    void fun();
+    void fun(class AController * controller, class ADuneAvatar * const avatar);
 };

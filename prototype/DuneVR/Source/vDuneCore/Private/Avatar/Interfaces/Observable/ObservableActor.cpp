@@ -65,7 +65,7 @@ void AObservableActor::interact(ADuneAvatar * const avatar, UViableInteraction *
         if (avatar->Controller)
         {
             if (viewer_)
-                viewer_->bind_delegate(this, &AObservableActor::fun);
+                viewer_->bind_delegate(this, avatar, &AObservableActor::fun);
 
             UE_LOG(LogClass, Log, TEXT("%s is possessing %s"), *avatar->GetName(), *this->GetName());
             avatar->Controller->Possess( viewer_ );
@@ -85,11 +85,11 @@ void AObservableActor::interact(ADuneAvatar * const avatar, UViableInteraction *
     }
 }
 
-void AObservableActor::fun()
+void AObservableActor::fun(AController * controller, ADuneAvatar * const avatar)
 {
     UE_LOG(LogClass, Log, TEXT("Ending interaction"));
-//    if (!avatar) return;
-//    if (!avatar->Controller) return;
-//
-//    avatar->Controller->Possess( avatar );
+    if (!avatar) return;
+    if (!controller) return;
+
+    controller->Possess( avatar );
 }

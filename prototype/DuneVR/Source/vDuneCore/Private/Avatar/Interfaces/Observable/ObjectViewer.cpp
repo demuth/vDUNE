@@ -1,6 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "vDuneCore/Public/Avatar/Interfaces/Observable/ObjectViewer.h"
 #include "vDuneCore/Public/Avatar/Interfaces/Observable/ObservableActor.h"
 #include "vDuneCore/Public/Avatar/DuneAvatar.h"
@@ -9,6 +6,7 @@
 
 // Sets default values
 AObjectViewer::AObjectViewer()
+: avatar_(nullptr)
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -49,7 +47,7 @@ void AObjectViewer::try_end_viewer_session()
 {
     /// Execute the delegate.
     UE_LOG(LogClass, Log, TEXT("%s is trying to initiate an interaction. "), *this->GetName());
-    delegate_.ExecuteIfBound();
+    delegate_.ExecuteIfBound( this->Controller, avatar_ );
 }
 
 void AObjectViewer::update_spring_arm_location(FVector location, FRotator rotator)
@@ -66,7 +64,8 @@ void AObjectViewer::set_distance(float distance)
     camera_boom_->TargetArmLength = distance;
 }
 
-void AObjectViewer::bind_delegate(AObservableActor * actor, void (AObservableActor::*fptr)())
+void AObjectViewer::bind_delegate(AObservableActor * actor, ADuneAvatar* avatar, void (AObservableActor::*fptr)(AController * controller, ADuneAvatar * const avatar))
 {
+    avatar_ = avatar;
     delegate_.BindUObject(actor, fptr);
 }

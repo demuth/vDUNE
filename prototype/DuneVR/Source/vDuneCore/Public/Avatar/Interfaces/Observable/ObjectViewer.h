@@ -6,7 +6,7 @@
 #include "ObjectViewer.generated.h"
 
 
-DECLARE_DELEGATE(EndSessionDelegate)
+DECLARE_DELEGATE_TwoParams(EndSessionDelegate, class AController *, class ADuneAvatar * const)
 
 UCLASS()
 class AObjectViewer : public APawn
@@ -29,6 +29,7 @@ protected:
 	/** Called when the game starts or when spawned */
 	virtual void BeginPlay() override;
 
+	ADuneAvatar * avatar_;
     EndSessionDelegate delegate_;
 
 public:	
@@ -43,5 +44,5 @@ public:
 
     void try_end_viewer_session();
 
-    void bind_delegate(class AObservableActor * actor, void (AObservableActor::*fptr)());
+    void bind_delegate(class AObservableActor* actor, ADuneAvatar* avatar, void (AObservableActor::*fptr)(class AController * controller, class ADuneAvatar * const avatar));
 };
