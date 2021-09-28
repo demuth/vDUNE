@@ -4,6 +4,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Engine/StaticMeshActor.h"
 #include "Camera/CameraComponent.h"
+#include "Ball/Ball.h"
 
 UBallDropExperimentTool::UBallDropExperimentTool()
 : UAvatarTool()
@@ -14,11 +15,19 @@ UBallDropExperimentTool::UBallDropExperimentTool()
 void UBallDropExperimentTool::setup(APawn * pawn, FTimerManager *manager)
 {
     UAvatarMode::setup(pawn, manager);
+
+    auto vec = pawn->GetActorLocation();
+    auto forw = pawn->GetActorForwardVector();
+    auto initial_location = vec + (forw * 100);
+    ball_ = GetWorld()->SpawnActor<ABall>(ball_type_, initial_location, FRotator(0), FActorSpawnParameters());
 }
 
 void UBallDropExperimentTool::teardown()
 {
     UAvatarTool::teardown();
+
+    if (!ball_->IsPendingKill())
+        ball_->Destroy();
 }
 
 
