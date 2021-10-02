@@ -16,13 +16,8 @@ void UBallDropExperimentTool::setup(APawn * pawn, FTimerManager *manager)
 {
     UAvatarMode::setup(pawn, manager);
 
-    auto forw = pawn->GetActorForwardVector();
-    auto transform = FVector(75, 0, 65);
-
-    UE_LOG(LogClass, Log, TEXT("Forw: %f, %f, %f"), forw.X, forw.Y, forw.Z)
-    auto initial_location = (forw + transform);
-
-    ball_ = GetWorld()->SpawnActor<ABall>(ball_type_, initial_location, FRotator(0), FActorSpawnParameters());
+    auto local_transform = FVector(75, 0, 65);
+    ball_ = GetWorld()->SpawnActor<ABall>(ball_type_, local_transform, FRotator(0), FActorSpawnParameters());
 
     /// Keep relative transform will set the origin of the object's transform to the
     /// origin of the avatar.

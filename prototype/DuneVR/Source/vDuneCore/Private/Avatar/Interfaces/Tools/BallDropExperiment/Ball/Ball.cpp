@@ -1,4 +1,5 @@
 #include "Avatar/Interfaces/Tools/BallDropExperiment/Ball/Ball.h"
+#include "Components/WidgetComponent.h"
 
 // Sets default values
 ABall::ABall()
@@ -8,6 +9,8 @@ ABall::ABall()
 
 	mesh_ = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ball_mesh"));
 	RootComponent = mesh_;
+
+	widget_ = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
 }
 
 // Called when the game starts or when spawned

@@ -21,6 +21,11 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadonly, Category=Ball, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadonly, Category=Configuration, meta = (AllowPrivateAccess = "true"))
 	class UStaticMeshComponent* mesh_;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Configuration)
+	TSubclassOf<class UUserWidget> ball_widget_;
+
+	class UWidgetComponent* widget_;
 };

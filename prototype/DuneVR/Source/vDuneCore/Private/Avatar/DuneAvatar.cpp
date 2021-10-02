@@ -55,7 +55,7 @@ ADuneAvatar::ADuneAvatar(const FObjectInitializer& ObjectInitializer)
 	follow_camera_->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
 	collection_sphere_ = CreateDefaultSubobject<USphereComponent>(TEXT("CollectionSphere"));
-	collection_sphere_->AttachTo(RootComponent);
+	collection_sphere_->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	collection_sphere_->SetSphereRadius(200.0f);
 
     available_tool_.Add(EAvatarTool::None, nullptr);
