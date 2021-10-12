@@ -1,0 +1,89 @@
+<!doctype html>
+<!-- The DOCTYPE declaration above will set the    -->
+<!-- browser's rendering engine into               -->
+<!-- "Standards Mode". Replacing this declaration  -->
+<!-- with a "Quirks Mode" doctype may lead to some -->
+<!-- differences in layout.                        -->
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+    <!--                                                               -->
+    <!-- Consider inlining CSS to reduce the number of requested files -->
+    <!--                                                               -->
+    <link type="text/css" rel="stylesheet" href="Application.css">
+    <link type="text/css" rel="stylesheet" href="standard.css">
+
+    <title>CERN Engineering & Equipment Data Management Service</title>
+
+    <!--                                           -->
+    <!-- This script loads your compiled module.   -->
+    <!-- If you add any GWT meta tags, they must   -->
+    <!-- be added before this line.                -->
+    <!--                                           -->
+    <script type="text/javascript" language="javascript"
+            src="Edms/Edms.nocache.js"></script>
+    <link rel="stylesheet" type="text/css" href="resources/css/gxt-all.css"/>
+    <link rel="stylesheet" type="text/css" href="resources/css/gxt-gray.css"/>
+    <!-- Icon in browser tab     -->
+    <link rel="shortcut icon" href="resources/images/default/favicon.ico"
+          type="image/x-icon"/>
+    <script language='javascript' src='resources/flash/swfobject.js'></script>
+
+    <!-- Polyfill for IE11 object-fit, used in thumbnails-->
+    <!--  https://github.com/bfred-it/object-fit-images-->
+    <!--  Version 3.2.3-->
+
+    <script type="text/javascript" language="javascript" src="resources/polyfills/object-fit.min.js"></script>
+</head>
+
+<!--                                           -->
+<!-- The body can have arbitrary html, or      -->
+<!-- you can leave the body empty if you want  -->
+<!-- to create a completely dynamic UI.        -->
+<!--                                           -->
+<body>
+
+<!-- OPTIONAL: include this if you want history support -->
+<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'
+        style="position: absolute; width: 0; height: 0; border: 0"></iframe>
+
+<!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
+<noscript>
+    <div
+            style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
+        Your web browser must have JavaScript enabled in order for this
+        application to display correctly.
+    </div>
+</noscript>
+<!-- Piwik -->
+<script type="text/javascript">
+    var pkBaseURL = (("https:" == document.location.protocol) ? "https://piwik.web.cern.ch/"
+        : "http://piwik.web.cern.ch/");
+    document.write(unescape("%3Cscript src='" + pkBaseURL
+        + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+    try {
+        var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 2599);
+        piwikTracker.trackPageView();
+        piwikTracker.enableLinkTracking();
+    } catch (err) {
+    }
+</script>
+<noscript>
+    <p>
+        <img src="http://piwik.web.cern.ch/piwik.php?idsite=2599"
+             style="border: 0" alt=""/>
+    </p>
+</noscript>
+<!-- End Piwik Tracking Code -->
+
+<!-- Polyfill for IE11 object-fit, used in thumbnails     -->
+<script type="text/javascript">
+    objectFitImages();
+</script>
+
+</body>
+</html>

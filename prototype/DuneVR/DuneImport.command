@@ -1,6 +1,6 @@
 #!/bin/bash
 
-UE4_Version='4.24'
+UE4_Version='4.26'
 CurrentDirectory="`dirname \"$0\"`"
 ProjectFilePath=$CurrentDirectory"/DuneVR.uproject"
 
