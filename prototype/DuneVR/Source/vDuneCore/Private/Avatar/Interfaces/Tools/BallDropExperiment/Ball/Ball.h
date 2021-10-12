@@ -21,6 +21,10 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	TSubclassOf<class UUserWidget> widget() const;
+	void set_widget(class UUserWidget* widget);
+
+protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadonly, Category=Configuration, meta = (AllowPrivateAccess = "true"))
 	class UStaticMeshComponent* mesh_;
 

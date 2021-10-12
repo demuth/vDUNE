@@ -11,19 +11,29 @@ ABall::ABall()
 	RootComponent = mesh_;
 
 	widget_ = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
+	widget_->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	widget_->SetDrawSize(FVector2D(100));
 }
 
 // Called when the game starts or when spawned
 void ABall::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
 void ABall::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
 
+TSubclassOf<UUserWidget> ABall::widget() const
+{
+    return ball_widget_;
+}
+
+void ABall::set_widget(UUserWidget* widget)
+{
+    widget_->SetWidget( widget );
 }
 

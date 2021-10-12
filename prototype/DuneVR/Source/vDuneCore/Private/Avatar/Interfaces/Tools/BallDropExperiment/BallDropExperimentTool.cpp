@@ -22,6 +22,15 @@ void UBallDropExperimentTool::setup(APawn * pawn, FTimerManager *manager)
     /// Keep relative transform will set the origin of the object's transform to the
     /// origin of the avatar.
     ball_->AttachToActor(pawn, FAttachmentTransformRules::KeepRelativeTransform);
+
+    UUserWidget * widget = nullptr;
+    auto controller = pawn->GetController<ADuneController>();
+
+    if (controller) widget = controller->new_widget( ball_->widget() );
+    else UE_LOG(LogClass, Error, TEXT("No Controller"));
+
+    if (widget) ball_->set_widget( widget );
+    else UE_LOG(LogClass, Error, TEXT("No widget"));
 }
 
 void UBallDropExperimentTool::teardown()
