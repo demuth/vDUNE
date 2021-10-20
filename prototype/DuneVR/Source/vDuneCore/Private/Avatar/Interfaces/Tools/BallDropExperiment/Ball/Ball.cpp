@@ -12,7 +12,6 @@ ABall::ABall()
 
 	widget_ = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
 	widget_->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-	widget_->SetDrawSize(FVector2D(100));
 }
 
 // Called when the game starts or when spawned
@@ -35,5 +34,13 @@ TSubclassOf<UUserWidget> ABall::widget() const
 void ABall::set_widget(UUserWidget* widget)
 {
     widget_->SetWidget( widget );
+}
+
+void ABall::face_camera(FVector camera_location)
+{
+    FVector widget_location = widget_->GetComponentLocation();
+    FVector vector = camera_location - widget_location;
+
+    widget_->SetWorldRotation( vector.Rotation() );
 }
 

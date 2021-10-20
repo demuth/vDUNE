@@ -26,4 +26,5 @@ protected:
 
 private:
     ABall *ball_;
+    APawn *pawn_;
 };

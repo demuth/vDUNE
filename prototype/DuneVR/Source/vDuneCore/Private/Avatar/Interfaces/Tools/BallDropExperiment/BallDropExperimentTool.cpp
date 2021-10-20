@@ -16,6 +16,8 @@ void UBallDropExperimentTool::setup(APawn * pawn, FTimerManager *manager)
 {
     UAvatarMode::setup(pawn, manager);
 
+    pawn_ = pawn;
+
     auto local_transform = FVector(75, 0, 65);
     ball_ = GetWorld()->SpawnActor<ABall>(ball_type_, local_transform, FRotator(0), FActorSpawnParameters());
 
@@ -41,10 +43,20 @@ void UBallDropExperimentTool::teardown()
         ball_->Destroy();
 }
 
-
 void UBallDropExperimentTool::update()
 {
     UAvatarMode::update();
+
+    FVector vector = FVector(0);
+
+    auto avatar = Cast<ADuneAvatar>(pawn_);
+    if (avatar)
+    {
+        auto camera = avatar->get_follow_camera();
+        if (camera) vector = camera->GetComponentLocation();
+    }
+
+    ball_->face_camera( vector );
 }
 
 FTransform UBallDropExperimentTool::calculate_camera_displacement(FVector forward, FVector start)

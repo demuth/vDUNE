@@ -24,6 +24,8 @@ public:
 	TSubclassOf<class UUserWidget> widget() const;
 	void set_widget(class UUserWidget* widget);
 
+	void face_camera(FVector camera_location);
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadonly, Category=Configuration, meta = (AllowPrivateAccess = "true"))
 	class UStaticMeshComponent* mesh_;
