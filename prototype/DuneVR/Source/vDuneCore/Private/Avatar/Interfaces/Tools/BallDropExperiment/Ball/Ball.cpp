@@ -12,6 +12,8 @@ ABall::ABall()
 
 	widget_ = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
 	widget_->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+
 }
 
 // Called when the game starts or when spawned
@@ -34,6 +36,20 @@ TSubclassOf<UUserWidget> ABall::widget() const
 void ABall::set_widget(UUserWidget* widget)
 {
     widget_->SetWidget( widget );
+    widget_->SetOnlyOwnerSee(false);
+    widget_->SetIsReplicated(false);
+    widget_->SetRelativeRotation(FRotator(0.f, 0.f, 0.f));
+    widget_->SetDrawSize(FVector2D(1920, 1080));
+    widget_->SetRelativeScale3D(FVector(.5f, .5f, .5f));
+
+    /// collision channels
+    widget_->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+    widget_->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
+    widget_->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+
+    /// block camera & visibility for mouse cursor
+    widget_->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Block);
+    widget_->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Block);
 }
 
 void ABall::face_camera(FVector camera_location)
