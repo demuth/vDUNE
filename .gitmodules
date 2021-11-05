@@ -1,0 +1,3 @@
+[submodule "prototype/DuneVR/Libraries/PhysicsLib"]
+	path = prototype/DuneVR/Libraries/PhysicsLib
+	url = https://github.com/lmsorenson/PhysicsLib
