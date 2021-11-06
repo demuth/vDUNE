@@ -1,6 +1,8 @@
 #include "Avatar/Interfaces/Tools/BallDropExperiment/Ball/Ball.h"
 #include "Components/WidgetComponent.h"
 
+#include <PhysicsLib/PhysicsLib.h>
+
 // Sets default values
 ABall::ABall()
 {
@@ -26,6 +28,7 @@ void ABall::BeginPlay()
 void ABall::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	free_fall_distance(DeltaTime);
 }
 
 TSubclassOf<UUserWidget> ABall::widget() const

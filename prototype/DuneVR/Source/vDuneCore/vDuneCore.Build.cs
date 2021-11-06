@@ -19,6 +19,6 @@ public class vDuneCore : ModuleRules
         });
 
         PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay" });
-        PrivateDependencyModuleNames.AddRange(new string[] { "RenderCore", "UMG", "Slate", "SlateCore", "Json", "JsonUtilities" });
+        PrivateDependencyModuleNames.AddRange(new string[] { "RenderCore", "UMG", "Slate", "SlateCore", "Json", "JsonUtilities", "PhysicsLib" });
 	}
 }
