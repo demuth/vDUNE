@@ -95,3 +95,14 @@ UUserWidget * ADuneController::new_widget(TSubclassOf<UUserWidget> type)
 {
     return CreateWidget<UUserWidget>(this, type);
 }
+
+int32 ADuneController::add_binding(FInputActionBinding binding)
+{
+    auto bound = InputComponent->AddActionBinding( binding );
+    return bound.GetHandle();
+}
+
+void ADuneController::remove_binding(int32 handle)
+{
+    InputComponent->RemoveActionBindingForHandle( handle );
+}

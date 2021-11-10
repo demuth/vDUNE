@@ -5,6 +5,7 @@
 #include "Engine/StaticMeshActor.h"
 #include "Camera/CameraComponent.h"
 #include "Ball/Ball.h"
+#include "GameFramework/InputSettings.h"
 
 UBallDropExperimentTool::UBallDropExperimentTool()
 : UAvatarTool()
@@ -18,6 +19,12 @@ void UBallDropExperimentTool::setup(APawn * pawn, FTimerManager *manager)
 
     pawn_ = pawn;
 
+    FInputActionBinding BallDropExperimentReleaseBinding( "BallDropRelease", IE_Released );
+    BallDropExperimentReleaseBinding.ActionDelegate.GetDelegateForManualSet().BindLambda( [this]()
+    {
+        this->release_ball();
+    });
+
     auto local_transform = FVector(75, 0, 65);
     ball_ = GetWorld()->SpawnActor<ABall>(ball_type_, local_transform, FRotator(0), FActorSpawnParameters());
 
@@ -26,9 +33,15 @@ void UBallDropExperimentTool::setup(APawn * pawn, FTimerManager *manager)
     ball_->AttachToActor(pawn, FAttachmentTransformRules::KeepRelativeTransform);
 
     UUserWidget * widget = nullptr;
-    auto controller = pawn->GetController<ADuneController>();
+    auto controller = pawn_->GetController<ADuneController>();
 
-    if (controller) widget = controller->new_widget( ball_->widget() );
+    if (controller)
+    {
+        widget = controller->new_widget( ball_->widget() );
+
+        auto handle = controller->add_binding(BallDropExperimentReleaseBinding);
+        input_binding_handles_.Add( handle );
+    }
     else UE_LOG(LogClass, Error, TEXT("No Controller"));
 
     if (widget) ball_->set_widget( widget );
@@ -41,6 +54,14 @@ void UBallDropExperimentTool::teardown()
 
     if (!ball_->IsPendingKill())
         ball_->Destroy();
+
+    for(int32 handle : input_binding_handles_)
+    {
+        auto controller = pawn_->GetController<ADuneController>();
+        if (!controller) break;
+
+        controller->remove_binding( handle );
+    }
 }
 
 void UBallDropExperimentTool::update()
@@ -69,5 +90,12 @@ FTransform UBallDropExperimentTool::calculate_camera_displacement(FVector forwar
 
 float UBallDropExperimentTool::calculate_camera_arm_length()
 {
-    return 150.0f;
+    return 300.0f;
+}
+
+void UBallDropExperimentTool::release_ball()
+{
+    UE_LOG(LogClass, Log, TEXT("Release ball."));
+    ball_->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+    ball_->drop();
 }

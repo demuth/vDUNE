@@ -4,6 +4,13 @@
 #include "GameFramework/Actor.h"
 #include "Ball.generated.h"
 
+enum class BallDropState
+{
+    Held = 0,
+    Released,
+    Unknown
+};
+
 UCLASS()
 class ABall : public AActor
 {
@@ -25,6 +32,7 @@ public:
 	void set_widget(class UUserWidget* widget);
 
 	void face_camera(FVector camera_location);
+	void drop();
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadonly, Category=Configuration, meta = (AllowPrivateAccess = "true"))
@@ -34,4 +42,10 @@ protected:
 	TSubclassOf<class UUserWidget> ball_widget_;
 
 	class UWidgetComponent* widget_;
+
+private:
+	BallDropState state_;
+
+	/// Current velocity in meters per second,
+	double velocity_;
 };

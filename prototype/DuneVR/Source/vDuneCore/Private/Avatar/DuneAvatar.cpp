@@ -86,6 +86,7 @@ void ADuneAvatar::BeginPlay()
 
 void ADuneAvatar::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
+    UE_LOG(LogTemp, Log, TEXT("Setup Input..."))
 	// Set up gameplay key bindings
 	check(PlayerInputComponent);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);

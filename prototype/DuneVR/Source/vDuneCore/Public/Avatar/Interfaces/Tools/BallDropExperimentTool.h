@@ -27,4 +27,7 @@ protected:
 private:
     ABall *ball_;
     APawn *pawn_;
+    TArray<int32> input_binding_handles_;
+
+    void release_ball();
 };

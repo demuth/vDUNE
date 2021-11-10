@@ -52,7 +52,7 @@ void DecoratorBase::setup(ADuneController *controller, TSubclassOf<UUserWidget> 
 
 void DecoratorBase::update(float dt)
 {
-    UE_LOG(LogClass, Log, TEXT("Updating the decorator: %s"), *decorator_name_);
+//    UE_LOG(LogClass, Log, TEXT("Updating the decorator: %s"), *decorator_name_);
     for(auto &decorator : decorator_list_)
     {
         // update non-base decorators

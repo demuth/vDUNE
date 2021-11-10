@@ -5,6 +5,8 @@
 
 // Sets default values
 ABall::ABall()
+: state_(BallDropState::Held)
+, velocity_(0)
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -14,8 +16,6 @@ ABall::ABall()
 
 	widget_ = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
 	widget_->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-
-
 }
 
 // Called when the game starts or when spawned
@@ -28,7 +28,31 @@ void ABall::BeginPlay()
 void ABall::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	free_fall_distance(DeltaTime);
+
+	if (state_ == BallDropState::Released)
+	{
+	    UE_LOG(LogClass, Log, TEXT("Ball is in free fall..."));
+
+	    Velocity v;
+	    v.magnitude = 0;
+	    v.direction.x = 0;
+	    v.direction.y = 0;
+	    v.direction.z = velocity_;
+
+	    /// Calculate fall distance and final velocity using meters and meters/second
+	    double distance_in_meters = free_fall_distance( DeltaTime,  v );
+	    velocity_ = velocity_at_time_interval( DeltaTime, v );
+
+	    /// Unit conversions
+	    double distance_in_centimeters = distance_in_meters * 100;
+
+	    /// Update position based on calculated distance.
+	    FVector position = this->GetActorLocation();
+	    position = position + FVector(0, 0, distance_in_centimeters);
+	    this->SetActorLocation(position);
+
+	    UE_LOG(LogClass, Log, TEXT("Ball fell %f distance since last frame was drawn.  Final velocity %f"), distance_in_meters, velocity_);
+	}
 }
 
 TSubclassOf<UUserWidget> ABall::widget() const
@@ -61,5 +85,10 @@ void ABall::face_camera(FVector camera_location)
     FVector vector = camera_location - widget_location;
 
     widget_->SetWorldRotation( vector.Rotation() );
+}
+
+void ABall::drop()
+{
+    state_ = BallDropState::Released;
 }
 
