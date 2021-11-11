@@ -1,12 +1,13 @@
 #include "Avatar/Interfaces/Tools/BallDropExperiment/Ball/Ball.h"
 #include "Components/WidgetComponent.h"
+#include "DrawDebugHelpers.h"
 
 #include <PhysicsLib/PhysicsLib.h>
 
 // Sets default values
 ABall::ABall()
 : state_(BallDropState::Held)
-, velocity_(0)
+, velocity_(5.0f)
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -22,6 +23,14 @@ ABall::ABall()
 void ABall::BeginPlay()
 {
 	Super::BeginPlay();
+
+	mesh_->SetCollisionProfileName(TEXT("WorldStatic"));
+
+	SetActorEnableCollision(ECollisionEnabled::QueryOnly);
+
+    mesh_->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Overlap);
+    mesh_->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldDynamic, ECollisionResponse::ECR_Ignore);
+    mesh_->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
 }
 
 // Called every frame
@@ -35,7 +44,7 @@ void ABall::Tick(float DeltaTime)
 
 	    Velocity v;
 	    v.magnitude = 0;
-	    v.direction.x = 0;
+	    v.direction.x = 100.0f;
 	    v.direction.y = 0;
 	    v.direction.z = velocity_;
 
@@ -47,9 +56,11 @@ void ABall::Tick(float DeltaTime)
 	    double distance_in_centimeters = distance_in_meters * 100;
 
 	    /// Update position based on calculated distance.
-	    FVector position = this->GetActorLocation();
-	    position = position + FVector(0, 0, distance_in_centimeters);
-	    this->SetActorLocation(position);
+	    FVector old_position = this->GetActorLocation();
+	    FVector new_position = old_position + FVector(v.direction.x * DeltaTime, v.direction.y * DeltaTime, distance_in_centimeters);
+	    this->SetActorLocation(new_position);
+
+	    DrawDebugLine(GetWorld(), old_position, new_position, FColor::Cyan, false, 1.5f, 0, 1);
 
 	    UE_LOG(LogClass, Log, TEXT("Ball fell %f distance since last frame was drawn.  Final velocity %f"), distance_in_meters, velocity_);
 	}
@@ -92,3 +103,15 @@ void ABall::drop()
     state_ = BallDropState::Released;
 }
 
+void ABall::NotifyHit
+(class UPrimitiveComponent * MyComp, AActor * Other, class UPrimitiveComponent * OtherComp, bool bSelfMoved,
+        FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult & Hit)
+{
+    UE_LOG(LogClass, Log, TEXT("Its a hit."));
+}
+
+void ABall::NotifyActorBeginOverlap(AActor * OtherActor)
+{
+    UE_LOG(LogClass, Log, TEXT("Its an overlap. %s"), *FString(OtherActor->GetName()));
+    state_ = BallDropState::Unknown;
+}
