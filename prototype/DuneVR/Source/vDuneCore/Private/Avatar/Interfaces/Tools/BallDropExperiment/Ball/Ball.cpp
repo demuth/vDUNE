@@ -2,12 +2,16 @@
 #include "Components/WidgetComponent.h"
 #include "DrawDebugHelpers.h"
 
+#include "vDuneCore/Private/Avatar/Interfaces/Tools/BallDropExperiment/Models/BallState.h"
+
 #include <PhysicsLib/PhysicsLib.h>
 
 // Sets default values
 ABall::ABall()
-: state_(BallDropState::Held)
-, velocity_(5.0f)
+: state_(BallState::HeldAboveGround)
+, velocity_(20.0f)
+, total_time_in_free_fall_(0.0f)
+, total_distance_in_free_fall_(0.0f)
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -38,9 +42,10 @@ void ABall::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (state_ == BallDropState::Released)
+	if (state_ == BallState::FreeFall)
 	{
 	    UE_LOG(LogClass, Log, TEXT("Ball is in free fall..."));
+	    total_time_in_free_fall_ += DeltaTime;
 
 	    Velocity v;
 	    v.magnitude = 0;
@@ -52,6 +57,8 @@ void ABall::Tick(float DeltaTime)
 	    double distance_in_meters = free_fall_distance( DeltaTime,  v );
 	    velocity_ = velocity_at_time_interval( DeltaTime, v );
 
+	    total_distance_in_free_fall_ += distance_in_meters;
+
 	    /// Unit conversions
 	    double distance_in_centimeters = distance_in_meters * 100;
 
@@ -62,7 +69,8 @@ void ABall::Tick(float DeltaTime)
 
 	    DrawDebugLine(GetWorld(), old_position, new_position, FColor::Cyan, false, 1.5f, 0, 1);
 
-	    UE_LOG(LogClass, Log, TEXT("Ball fell %f distance since last frame was drawn.  Final velocity %f"), distance_in_meters, velocity_);
+	    add_state(FVector(0, 0, velocity_), total_distance_in_free_fall_, total_time_in_free_fall_);
+	    UE_LOG(LogClass, Log, TEXT("Ball fell %f distance since last frame was drawn (dt %f).  Final velocity %f.  Ball has fallen a total of %f meters for a time of %f seconds."), distance_in_meters, DeltaTime, velocity_, total_distance_in_free_fall_, total_time_in_free_fall_);
 	}
 }
 
@@ -100,7 +108,7 @@ void ABall::face_camera(FVector camera_location)
 
 void ABall::drop()
 {
-    state_ = BallDropState::Released;
+    state_ = BallState::FreeFall;
 }
 
 void ABall::NotifyHit
@@ -113,5 +121,19 @@ void ABall::NotifyHit
 void ABall::NotifyActorBeginOverlap(AActor * OtherActor)
 {
     UE_LOG(LogClass, Log, TEXT("Its an overlap. %s"), *FString(OtherActor->GetName()));
-    state_ = BallDropState::Unknown;
+    state_ = BallState::Unknown;
+}
+
+void ABall::add_state(FVector velocity, double distance, double time)
+{
+    UBallState* ball_state = NewObject<UBallState>();
+
+    ball_state->set(velocity, distance, time);
+
+    array_.Add( ball_state );
+}
+
+TArray<UBallState*> ABall::states() const
+{
+    return array_;
 }

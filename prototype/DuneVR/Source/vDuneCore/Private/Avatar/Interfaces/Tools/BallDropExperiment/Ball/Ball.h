@@ -4,10 +4,10 @@
 #include "GameFramework/Actor.h"
 #include "Ball.generated.h"
 
-enum class BallDropState
+enum class BallState
 {
-    Held = 0,
-    Released,
+    HeldAboveGround = 0,
+    FreeFall,
     Unknown
 };
 
@@ -38,6 +38,8 @@ public:
 	void face_camera(FVector camera_location);
 	void drop();
 
+	TArray<class UBallState*> states() const;
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadonly, Category=Configuration, meta = (AllowPrivateAccess = "true"))
 	class UStaticMeshComponent* mesh_;
@@ -47,9 +49,16 @@ protected:
 
 	class UWidgetComponent* widget_;
 
+
+	void add_state(FVector velocity, double distance, double time);
+
 private:
-	BallDropState state_;
+    BallState state_;
+
+    TArray<class UBallState*> array_;
 
 	/// Current velocity in meters per second,
 	double velocity_;
+	double total_time_in_free_fall_;
+	double total_distance_in_free_fall_;
 };

@@ -32,7 +32,6 @@ void UAvatarMode::teardown()
 
 void UAvatarMode::update()
 {
-
 }
 
 FTransform UAvatarMode::calculate_camera_displacement(FVector avatar_forward_vector, FVector avatar_world_location)

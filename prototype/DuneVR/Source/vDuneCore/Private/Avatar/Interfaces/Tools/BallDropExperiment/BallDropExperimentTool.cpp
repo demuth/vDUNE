@@ -1,11 +1,15 @@
 #include "vDuneCore/Public/Avatar/Interfaces/Tools/BallDropExperimentTool.h"
 #include "vDuneCore/Public/Avatar/DuneAvatar.h"
+
+#include "vDuneCore/Private/Avatar/Interfaces/Tools/BallDropExperiment/Models/BallState.h"
+#include "Ball/Ball.h"
+
 #include "GameFramework/Pawn.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/InputSettings.h"
 #include "Engine/StaticMeshActor.h"
 #include "Camera/CameraComponent.h"
-#include "Ball/Ball.h"
-#include "GameFramework/InputSettings.h"
+
 
 UBallDropExperimentTool::UBallDropExperimentTool()
 : UAvatarTool()
@@ -17,14 +21,14 @@ void UBallDropExperimentTool::setup(APawn * pawn, FTimerManager *manager)
 {
     UAvatarMode::setup(pawn, manager);
 
-    pawn_ = pawn;
-
+    /// Bind Actions to Key Mappings
     FInputActionBinding BallDropExperimentReleaseBinding( "BallDropRelease", IE_Released );
     BallDropExperimentReleaseBinding.ActionDelegate.GetDelegateForManualSet().BindLambda( [this]()
     {
         this->release_ball();
     });
 
+    /// Spawn the Ball
     auto local_transform = FVector(75, 0, 65);
     ball_ = GetWorld()->SpawnActor<ABall>(ball_type_, local_transform, FRotator(0), FActorSpawnParameters());
 
@@ -34,15 +38,21 @@ void UBallDropExperimentTool::setup(APawn * pawn, FTimerManager *manager)
 
     UUserWidget * widget = nullptr;
     auto controller = pawn_->GetController<ADuneController>();
-
     if (controller)
     {
+        /// Create the widget from a widget class.
         widget = controller->new_widget( ball_->widget() );
 
+        /// Add action bindings to the controller.
         auto handle = controller->add_binding(BallDropExperimentReleaseBinding);
         input_binding_handles_.Add( handle );
     }
-    else UE_LOG(LogClass, Error, TEXT("No Controller"));
+    /// Called when the controller is null or not a Dune Controller.
+    else
+    {
+        UE_LOG(LogClass, Error, TEXT("No Controller"));
+    }
+
 
     if (widget) ball_->set_widget( widget );
     else UE_LOG(LogClass, Error, TEXT("No widget"));
@@ -98,4 +108,11 @@ void UBallDropExperimentTool::release_ball()
     UE_LOG(LogClass, Log, TEXT("Release ball."));
     ball_->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
     ball_->drop();
+}
+
+TArray<UBallState*> UBallDropExperimentTool::ball_state() const
+{
+    TArray<class UBallState*> empty;
+
+    return (ball_) ? ball_->states() : empty;
 }

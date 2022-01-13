@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "4.26",
+	"EngineAssociation": "4.27",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -14,23 +14,23 @@
 			]
 		},
 		{
-            "Name": "vDuneCore",
-            "Type": "Runtime",
+			"Name": "vDuneCore",
+			"Type": "Runtime",
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
 				"Engine",
 				"CoreUObject"
 			]
-        },
+		},
 		{
-            "Name": "HighEnergyPhysicsEngine",
-            "Type": "Runtime",
+			"Name": "HighEnergyPhysicsEngine",
+			"Type": "Runtime",
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
 				"Engine",
 				"CoreUObject"
 			]
-        }
+		}
 	],
 	"Plugins": [
 		{
