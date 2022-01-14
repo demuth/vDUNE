@@ -5,9 +5,9 @@
 
 ### Cloning
 The following is the command to clone the repository.  Submodules should be initialized when this project is cloned:
-```
+> ```bash
 > git clone https://github.com/demuth/vDUNE.git --recurse-submodules
-```
+> ```
 
 ### Subversion
 We recommend Subversion for this project because it allows commits with a greater file size than git.
