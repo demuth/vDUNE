@@ -24,6 +24,12 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Widgets)
     TSubclassOf<class ABall> ball_type_;
 
+    UFUNCTION(BlueprintCallable, Category=Dimensions)
+    TArray<class UBallState*> ball_state() const;
+
 private:
     ABall *ball_;
+    TArray<int32> input_binding_handles_;
+
+    void release_ball();
 };

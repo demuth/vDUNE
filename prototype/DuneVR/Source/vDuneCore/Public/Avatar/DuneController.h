@@ -23,6 +23,9 @@ public:
 
     UUserWidget * new_widget(TSubclassOf<class UUserWidget> type);
 
+    int32 add_binding(FInputActionBinding binding);
+    void remove_binding(int32 handle);
+
 protected:
     virtual void SetupInputComponent() override;
 

@@ -101,7 +101,7 @@ protected:
 	TArray<class UPickupModel*> get_collectibles() const;
 
     UFUNCTION(BlueprintCallable, Category=Inventory)
-    class UUserWidget *  display_pickup(TSubclassOf<class UAvatarMenu> menu_type);
+    class UUserWidget * display_pickup(TSubclassOf<class UAvatarMenu> menu_type);
 
     UFUNCTION(BlueprintCallable, Category=Interfaces)
     TMap<FString, class UViableInteraction *> get_viable_interactions() const;
